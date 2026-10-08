@@ -27,13 +27,14 @@ nanocore serve --static-dir web/dist
 The server prints an address like `http://127.0.0.1:<port>/#token=...`. Open exactly that
 address. The page reads the token from the fragment, keeps it in memory only, and removes it
 from the address bar. Reloading the page therefore loses the token: open the printed address
-again (the app then falls back to the Simulator, which needs no server).
+again.
 
-Without a token in the address (for example `npm run dev`), the editor behaves like the
-original: Simulator by default, plus Web MIDI and Web Bluetooth.
-
-While developing the UI, `npm run dev` serves the page; it has no token and so uses the
-Simulator. To exercise the bridge, build and serve through `nanocore serve`.
+The editor has one way to reach the pedal: the server. A page that is not served by
+`nanocore serve` (for example `npm run dev`) says so and connects to nothing. The original editor's
+Simulator, Web MIDI and Web Bluetooth transports were removed: they never reached the features of
+this project (presets, manual saving, models, settings), and were not verified on a pedal. The tests
+use a fake transport (`src/test/fakeTransport.ts`, registered as `'test'` in `src/setupTests.ts`).
+To exercise the real thing while developing, build and serve through `nanocore serve`.
 
 ## What the screen shows
 
@@ -92,8 +93,3 @@ affected.
 Still assumed and unverified: the `chain_order` values use the editor's own block numbering
 (fx1 0, fx2 1, amp 2, cab 3, mod 4, del 5, rev 6, eq 7), and the amp and cab slot numbers equal
 the editor's model indexes.
-
-## Other builds
-
-`npm run build:portable` and `npm run build:pages` still produce the original single-file and
-GitHub Pages builds (Simulator, Web MIDI, Web Bluetooth only).

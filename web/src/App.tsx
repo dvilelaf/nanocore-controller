@@ -17,26 +17,25 @@ import { useDeviceStore } from './store/deviceState';
 function App() {
   const { t } = useTranslation();
   const initTransport = usePatchStore((s) => s.initTransport);
-  const hardwareConnected = usePatchStore(
-    (s) => s.connection.transportKind === 'webmidi' && s.connection.ready && !!s.connection.outputId,
-  );
   const isBridge = usePatchStore((s) => s.connection.transportKind === 'bridge');
   const pedalConnected = useDeviceStore((s) => s.pedalConnected);
   const released = useDeviceStore((s) => s.released);
   const setTuner = usePatchStore((s) => s.setTuner);
   const [tunerOn, setTunerOn] = useState(false);
+  const [noServer, setNoServer] = useState(false);
   // The settings panel and the models panel share the bottom left corner: only one is open at a time.
   const [panel, setPanel] = useState<'settings' | 'models' | null>(null);
   const setSettingsOpen = useCallback((open: boolean) => setPanel((was) => (open ? 'settings' : was === 'settings' ? null : was)), []);
   const setModelsOpen = useCallback((open: boolean) => setPanel((was) => (open ? 'models' : was === 'models' ? null : was)), []);
 
   useEffect(() => {
-    // Served by `nanocore serve` (token in the address, or none needed): talk to it. Otherwise default to the
-    // Simulator so the whole editor is usable before hardware arrives.
+    // The editor talks to `nanocore serve` (token in the address, or none needed). Without it there is no pedal.
     let cancelled = false;
     void (async () => {
       const bridged = getBridgeToken() !== null || (await detectTokenlessServer());
-      if (!cancelled) initTransport(bridged ? 'bridge' : 'simulator');
+      if (cancelled) return;
+      if (bridged) void initTransport('bridge');
+      else setNoServer(true);
     })();
     return () => {
       cancelled = true;
@@ -72,11 +71,11 @@ function App() {
           </Toast>
         )}
 
-        {!isBridge && !hardwareConnected && (
+        {noServer && (
           <Toast>
             {t(
-              'app.noHardwareNotice',
-              'No NanoCore connected yet — build your patch and try it in the Simulator. Switch to Web MIDI once your hardware arrives.',
+              'app.noServerNotice',
+              'This page is not served by nanocore serve, so there is no pedal to talk to. Run nanocore serve and open the address it prints.',
             )}
           </Toast>
         )}

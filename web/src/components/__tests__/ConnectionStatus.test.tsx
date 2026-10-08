@@ -27,13 +27,13 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
-  usePatchStore.setState((s) => ({ connection: { ...s.connection, transportKind: 'simulator' } }));
+  usePatchStore.setState((s) => ({ connection: { ...s.connection, transportKind: 'test' } }));
   vi.restoreAllMocks();
 });
 
 describe('connection indicator', () => {
   it('renders nothing for the other transports', () => {
-    usePatchStore.setState((s) => ({ connection: { ...s.connection, transportKind: 'simulator' } }));
+    usePatchStore.setState((s) => ({ connection: { ...s.connection, transportKind: 'test' } }));
     const { container } = wrap(<ConnectionStatus />);
     expect(container).toBeEmptyDOMElement();
   });

@@ -19,7 +19,7 @@ const cards = (container: HTMLElement) => [...container.querySelectorAll<HTMLEle
 const order = (container: HTMLElement) => cards(container).map((c) => c.dataset.block);
 
 beforeEach(async () => {
-  await usePatchStore.getState().initTransport('simulator');
+  await usePatchStore.getState().initTransport('test');
   usePatchStore.getState().resetPatch();
   usePatchStore.getState().clearLog();
   useDeviceStore.getState().reset();
@@ -155,7 +155,7 @@ describe('ChainBoard with values from the pedal', () => {
 
 describe('ChainBoard value controls', () => {
   beforeEach(async () => {
-    await usePatchStore.getState().initTransport('simulator');
+    await usePatchStore.getState().initTransport('test');
     usePatchStore.getState().resetPatch();
     useDeviceStore.getState().reset();
   });

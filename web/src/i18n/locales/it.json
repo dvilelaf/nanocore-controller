@@ -2,30 +2,11 @@
   "app": {
     "title": "NanoCore Editor",
     "subtitle": "Editor online non ufficiale per il multieffetto Livtra NanoCore",
-    "noHardwareNotice": "Nessun NanoCore ancora collegato — crea la tua patch e provala nel Simulatore. Passa a Web MIDI quando arriva l'hardware.",
-    "noPedalNotice": "Il server non è collegato a un pedale in questo momento. Continua a riprovare; l'editor si aggiorna quando il pedale torna disponibile."
+    "noPedalNotice": "Il server non è collegato a un pedale in questo momento. Continua a riprovare; l'editor si aggiorna quando il pedale torna disponibile.",
+    "noServerNotice": "Questa pagina non è servita da nanocore serve, quindi non c'è nessun pedale con cui parlare. Avvia nanocore serve e apri l'indirizzo che stampa."
   },
   "connection": {
     "title": "Connessione MIDI",
-    "transport": "Trasporto",
-    "transportWebmidi": "Web MIDI (USB / Bluetooth abbinato dal sistema)",
-    "pairingHint": "USB e Bluetooth funzionano entrambi. Per il Bluetooth qui, abbina prima il NanoCore a livello di sistema operativo (su macOS: Audio MIDI Setup → finestra MIDI Studio → Bluetooth) — riattiva il Bluetooth sul device per farlo tornare visibile, e assicurati che nient'altro (es. l'app ufficiale sul telefono) stia già occupando la connessione. Una volta abbinato, comparirà qui sotto come qualsiasi altra porta. (Oppure usa il trasporto \"Bluetooth\" qui sopra per abbinarlo direttamente da questa pagina.)",
-    "transportSimulator": "Simulatore (senza hardware)",
-    "output": "Uscita",
-    "noOutputs": "Nessuna uscita MIDI trovata. Collega il NanoCore via USB e aggiorna.",
-    "channel": "Canale",
-    "channelHint": "Deve corrispondere al canale MIDI impostato sul NanoCore (canale dispositivo 0 = Omni, va bene qualsiasi canale).",
-    "refresh": "Aggiorna",
-    "statusReady": "Pronto",
-    "statusInitializing": "Connessione…",
-    "statusError": "Errore",
-    "statusNotReady": "Non connesso",
-    "transportBluetooth": "Bluetooth (abbina da questa pagina)",
-    "bluetoothHint": "Apre il selettore dispositivi del browser (solo Chrome/Edge/Opera, richiede HTTPS o localhost) e si connette direttamente al servizio Bluetooth MIDI del NanoCore — nessun abbinamento a livello di sistema operativo necessario. Riattiva il Bluetooth sul device se non compare, e assicurati che nient'altro (es. l'app ufficiale sul telefono) stia già occupando la connessione. Già connesso? Selezionarlo di nuovo non riaprirà il selettore — usa Disconnetti qui sotto per scegliere un altro dispositivo.",
-    "disconnect": "Disconnetti",
-    "noBluetoothOutput": "Non ancora connesso — clicca sul pulsante di trasporto Bluetooth qui sopra per aprire il selettore dispositivi.",
-    "transportBridge": "Server NanoCore (questa pagina)",
-    "bridgeHint": "Il processo locale nanocore serve gestisce la connessione al pedale. Le modifiche sono applicate subito e salvate automaticamente.",
     "menu": "Connessione",
     "switchPedal": "Pedale",
     "switchSpeakers": "Altoparlanti"

@@ -1,30 +1,24 @@
-import type { MessageListener, MidiPortInfo, MidiTransport, OutgoingMessage } from './types';
+import type { MessageListener, MidiPortInfo, MidiTransport, OutgoingMessage } from '../midi/types';
 
-const SIMULATED_OUTPUT: MidiPortInfo = { id: 'simulator', name: 'Simulated NanoCore (no hardware needed)' };
+const TEST_OUTPUT: MidiPortInfo = { id: 'test', name: 'Test output' };
 
 /**
- * A transport that doesn't touch any real MIDI hardware. It exists so the whole
- * editor — chain, parameter scaling, preset push — can be built and exercised
- * before a physical NanoCore is available. Every "sent" message is broadcast to
- * subscribers, which the Simulator panel uses to reconstruct device state
- * exactly the way the real firmware is documented to interpret it.
+ * A transport that records what the editor would send and talks to nothing. The production editor
+ * has one transport (the server); the tests that exercise the editor without a server register
+ * this one under the kind 'test' (see setupTests.ts) and use it through `initTransport('test')`.
  */
-export class SimulatorTransport implements MidiTransport {
-  readonly kind = 'simulator' as const;
-  readonly label = 'Simulator (no hardware needed)';
+export class FakeTransport implements MidiTransport {
+  readonly kind = 'test' as const;
+  readonly label = 'Test transport';
 
   private listeners = new Set<MessageListener>();
-
-  isSupported(): boolean {
-    return true;
-  }
 
   async init(): Promise<void> {
     // Nothing to set up.
   }
 
   listOutputs(): MidiPortInfo[] {
-    return [SIMULATED_OUTPUT];
+    return [TEST_OUTPUT];
   }
 
   onPortsChanged(): () => void {

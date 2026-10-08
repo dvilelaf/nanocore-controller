@@ -62,7 +62,7 @@ beforeEach(() => {
 
 afterEach(async () => {
   cleanup();
-  await usePatchStore.getState().initTransport('simulator');
+  await usePatchStore.getState().initTransport('test');
   resetBridgeTokenForTests();
   vi.unstubAllGlobals();
   vi.restoreAllMocks();

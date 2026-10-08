@@ -255,10 +255,6 @@ export class BridgeTransport implements MidiTransport {
     this.opts = opts;
   }
 
-  isSupported(): boolean {
-    return (this.opts.token ?? getBridgeToken)() !== null;
-  }
-
   listOutputs(): MidiPortInfo[] {
     return [BRIDGE_OUTPUT];
   }

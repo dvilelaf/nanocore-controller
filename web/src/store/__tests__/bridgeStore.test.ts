@@ -34,7 +34,7 @@ beforeEach(() => {
 });
 
 afterEach(async () => {
-  await usePatchStore.getState().initTransport('simulator');
+  await usePatchStore.getState().initTransport('test');
   resetBridgeTokenForTests();
   vi.unstubAllGlobals();
 });

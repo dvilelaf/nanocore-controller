@@ -3,7 +3,7 @@ export interface MidiPortInfo {
   name: string;
 }
 
-/** A single outgoing message, kept around for the activity log / simulator mirror. */
+/** A single outgoing message, kept around for the activity log. */
 export interface OutgoingMessage {
   kind: 'cc' | 'pc' | 'sysex';
   /** 1-16. Not meaningful for 'sysex' (SysEx is channel-less) — omitted for that kind. */
@@ -21,10 +21,9 @@ export interface OutgoingMessage {
 export type MessageListener = (msg: OutgoingMessage) => void;
 
 export interface MidiTransport {
-  readonly kind: 'webmidi' | 'simulator' | 'bluetooth' | 'bridge';
+  readonly kind: 'bridge' | 'test';
   readonly label: string;
   init(): Promise<void>;
-  isSupported(): boolean;
   listOutputs(): MidiPortInfo[];
   onPortsChanged(cb: () => void): () => void;
   sendCC(outputId: string, channel: number, cc: number, value: number, description?: string): void;
@@ -33,6 +32,6 @@ export interface MidiTransport {
    * the NanoCore's own SysEx protocol (reverse-engineered from real device traffic — see
    * docs/MIDI_MAPPING_NOTES.md) and the message builders that produce these bytes. */
   sendSysEx(outputId: string, bytes: number[], description?: string): void;
-  /** Subscribe to every message this transport sends (used to drive the on-screen simulator/log). */
+  /** Subscribe to every message this transport sends (feeds the activity log). */
   onMessageSent(cb: MessageListener): () => void;
 }

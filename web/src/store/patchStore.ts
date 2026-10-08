@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { nanocoreSpec } from '../data/nanocoreSpec';
-import { BleMidiTransport, SimulatorTransport, WebMidiTransport, bridgeTransport } from '../midi';
+import { bridgeTransport } from '../midi';
 import type { MidiPortInfo, MidiTransport, OutgoingMessage } from '../midi/types';
 import { enumIndexToCC, onOffToCC, realToCC } from '../midi/scaling';
 import { CHAIN_ORDER_BLOCK_IDS, buildBlockTypeSysEx, buildChainOrderSysEx } from '../midi/sysex';
@@ -32,15 +32,15 @@ export function setEditClock(fn: () => number): void {
   lastParamEdit.clear();
 }
 
-const webMidiTransport = new WebMidiTransport();
-const simulatorTransport = new SimulatorTransport();
-const bleMidiTransport = new BleMidiTransport();
+const transports: Partial<Record<TransportKind, MidiTransport>> = { bridge: bridgeTransport };
+
+/** The test suite registers a fake transport under the kind 'test'; the editor itself only has the server. */
+export function registerTestTransport(transport: MidiTransport): void {
+  transports.test = transport;
+}
 
 function transportFor(kind: TransportKind): MidiTransport {
-  if (kind === 'webmidi') return webMidiTransport;
-  if (kind === 'bluetooth') return bleMidiTransport;
-  if (kind === 'bridge') return bridgeTransport;
-  return simulatorTransport;
+  return transports[kind] ?? bridgeTransport;
 }
 
 let unsubPorts: (() => void) | null = null;
@@ -48,7 +48,8 @@ let unsubMessages: (() => void) | null = null;
 let unsubBridge: (() => void) | null = null;
 let initGeneration = 0;
 
-export type TransportKind = 'webmidi' | 'simulator' | 'bluetooth' | 'bridge';
+/** 'none' until the page has found a server; 'test' only exists in the test suite. */
+export type TransportKind = 'none' | 'bridge' | 'test';
 
 interface ConnectionState {
   transportKind: TransportKind;
@@ -74,11 +75,7 @@ interface PatchStore {
 
   // Connection
   initTransport: (kind: TransportKind) => Promise<void>;
-  refreshOutputs: () => void;
-  setOutput: (id: string) => void;
-  setChannel: (ch: number) => void;
   clearLog: () => void;
-  disconnectBluetooth: () => void;
 
   // Patch editing
   setBlockOn: (blockId: string, on: boolean) => void;
@@ -123,7 +120,7 @@ export const usePatchStore = create<PatchStore>((set, get) => ({
   patch: buildDefaultPatch(),
   chainOrder: nanocoreSpec.blocks.map((b) => b.id),
   connection: {
-    transportKind: 'simulator',
+    transportKind: 'none',
     outputId: null,
     channel: 1,
     outputs: [],
@@ -188,23 +185,7 @@ export const usePatchStore = create<PatchStore>((set, get) => ({
     }
   },
 
-  refreshOutputs: () => {
-    const transport = transportFor(get().connection.transportKind);
-    set((s) => ({ connection: { ...s.connection, outputs: transport.listOutputs() } }));
-  },
-
-  setOutput: (id) => set((s) => ({ connection: { ...s.connection, outputId: id } })),
-  setChannel: (ch) => set((s) => ({ connection: { ...s.connection, channel: Math.min(16, Math.max(1, ch)) } })),
   clearLog: () => set({ log: [] }),
-
-  disconnectBluetooth: () => {
-    bleMidiTransport.disconnect();
-    if (get().connection.transportKind === 'bluetooth') {
-      set((s) => ({
-        connection: { ...s.connection, outputs: [], outputId: null, ready: false },
-      }));
-    }
-  },
 
   setBlockOn: (blockId, on) => {
     const block = findBlock(blockId);

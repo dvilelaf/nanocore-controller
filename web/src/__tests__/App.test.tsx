@@ -22,18 +22,18 @@ beforeEach(() => {
 
 afterEach(async () => {
   cleanup();
-  await usePatchStore.getState().initTransport('simulator');
+  await usePatchStore.getState().initTransport('test');
   resetBridgeTokenForTests();
   vi.unstubAllGlobals();
 });
 
 describe('App without the server', () => {
-  it('keeps the simulator as the default and shows the notice, with no send flow', async () => {
+  it('connects to nothing and says so when the page is not served by the server', async () => {
     renderApp();
-    await waitFor(() => expect(usePatchStore.getState().connection.ready).toBe(true));
-    expect(usePatchStore.getState().connection.transportKind).toBe('simulator');
+    const notice = await screen.findByText(/not served by nanocore serve/);
+    expect(usePatchStore.getState().connection.transportKind).toBe('none');
+    expect(usePatchStore.getState().connection.ready).toBe(false);
     expect(screen.queryByTestId('link-status')).toBeNull();
-    const notice = screen.getByText(/No NanoCore connected yet/);
     expect(notice.closest('.app-toasts')).not.toBeNull();
     expect(screen.queryByRole('button', { name: 'Send patch to device' })).toBeNull();
     expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
@@ -171,7 +171,7 @@ describe('App served by nanocore serve', () => {
     expect(button).toHaveClass('connection-menu__button--disconnected');
   });
 
-  it('shows the Connection button as disconnected in the simulator, which is not a device', async () => {
+  it('shows the Connection button as disconnected for a transport that is not the server', async () => {
     renderApp();
     await waitFor(() => expect(usePatchStore.getState().connection.ready).toBe(true));
     expect(screen.getByRole('button', { name: /Connection/ })).toHaveClass('connection-menu__button--disconnected');

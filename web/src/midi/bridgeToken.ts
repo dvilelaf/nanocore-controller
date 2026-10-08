@@ -47,7 +47,7 @@ export function captureTokenFromUrl(
 /**
  * When the page was served by `nanocore serve --no-token` there is no token in the address, but
  * the server says so on its health route. The empty string then means "connect without one".
- * Nothing is stored. Anything that is not such a server leaves the editor in the simulator.
+ * Nothing is stored. Anything that is not such a server leaves the editor without a pedal.
  */
 export async function detectTokenlessServer(fetchFn: typeof fetch = fetch): Promise<boolean> {
   if (token !== null) return false;
@@ -60,7 +60,7 @@ export async function detectTokenlessServer(fetchFn: typeof fetch = fetch): Prom
       return true;
     }
   } catch {
-    // Not served by nanocore, or unreachable: stay in the simulator.
+    // Not served by nanocore, or unreachable: there is no server.
   }
   return false;
 }

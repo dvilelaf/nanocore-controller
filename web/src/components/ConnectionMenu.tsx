@@ -6,21 +6,15 @@ import { ConnectionPanel } from './ConnectionPanel';
 
 type State = 'connected' | 'connecting' | 'disconnected';
 
-/** Whether a real device is reachable: the pedal through the server, or a local MIDI port. */
+/** Whether the pedal is reachable through the server. */
 function useDeviceState(): State {
   const isBridge = usePatchStore((s) => s.connection.transportKind === 'bridge');
-  const kind = usePatchStore((s) => s.connection.transportKind);
-  const ready = usePatchStore((s) => s.connection.ready);
-  const initializing = usePatchStore((s) => s.connection.initializing);
   const link = useDeviceStore((s) => s.link);
   const pedalConnected = useDeviceStore((s) => s.pedalConnected);
 
-  if (isBridge) {
-    if (link === 'connecting' || link === 'reconnecting') return 'connecting';
-    return link === 'connected' && pedalConnected ? 'connected' : 'disconnected';
-  }
-  if (initializing) return 'connecting';
-  return ready && kind !== 'simulator' ? 'connected' : 'disconnected';
+  if (!isBridge) return 'disconnected';
+  if (link === 'connecting' || link === 'reconnecting') return 'connecting';
+  return link === 'connected' && pedalConnected ? 'connected' : 'disconnected';
 }
 
 /** Header button that opens the MIDI connection panel as a dropdown instead of a permanent block. */

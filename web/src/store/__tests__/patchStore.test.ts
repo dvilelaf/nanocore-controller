@@ -3,8 +3,8 @@ import { usePatchStore } from '../patchStore';
 import { nanocoreSpec } from '../../data/nanocoreSpec';
 
 async function ready() {
-  await usePatchStore.getState().initTransport('simulator');
-  // Simulator init is synchronous under the hood, but await the promise chain regardless.
+  await usePatchStore.getState().initTransport('test');
+  // The test transport starts at once, but await the promise chain regardless.
   await new Promise((r) => setTimeout(r, 0));
 }
 
@@ -15,11 +15,11 @@ beforeEach(async () => {
 });
 
 describe('patchStore connection lifecycle', () => {
-  it('becomes ready with the simulator output auto-selected', () => {
+  it('becomes ready with the transport output auto-selected', () => {
     const { connection } = usePatchStore.getState();
     expect(connection.ready).toBe(true);
-    expect(connection.transportKind).toBe('simulator');
-    expect(connection.outputId).toBe('simulator');
+    expect(connection.transportKind).toBe('test');
+    expect(connection.outputId).toBe('test');
   });
 });
 

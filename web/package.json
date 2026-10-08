@@ -10,10 +10,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "build:artifact": "vite build --config vite.artifact.config.ts",
-    "build:portable": "vite build --config vite.portable.config.ts && node scripts/rename-portable-output.mjs",
-    "build:pages": "vite build --config vite.pages.config.ts"
+    "test:watch": "vitest"
   },
   "dependencies": {
     "i18next": "^26.3.6",
@@ -33,7 +30,6 @@
     "oxlint": "^1.75.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.0",
-    "vite-plugin-singlefile": "^2.3.3",
     "vitest": "^4.1.10"
   }
 }
