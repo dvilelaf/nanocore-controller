@@ -5,6 +5,10 @@
 #   * open the editor in the browser, unless a page already has it open.
 # Everything is stopped when the pedal is unplugged. Settings: ~/.config/nanocore-loopback.env
 #
+# The editor has two switches for this (Connection menu): "Pedal" makes the server let go of the USB
+# port without stopping, and "Speakers" turns the audio to the speakers off (it creates
+# ~/.cache/nanocore-loopback.speakers-off, which this script watches).
+#
 # To use the pedal from a script or the command line (they cannot share the USB port with the
 # server), run `touch ~/.cache/nanocore-loopback.pause`: the server stops, the audio stays.
 # Remove the file to bring the server back.
@@ -12,6 +16,7 @@
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/nanocore-loopback.env"
 PAUSE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.pause"
 OPENED_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.opened"
+SPEAKERS_OFF_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.speakers-off"
 
 QUANTUM=64
 SINK_VOL=70%
@@ -44,7 +49,8 @@ health() { curl -fsS -m 2 "http://127.0.0.1:$SERVE_PORT/api/health" 2>/dev/null;
 clients() { health | sed -n 's/.*"clients": *\([0-9][0-9]*\).*/\1/p'; }
 
 start_server() {
-  "$NANOCORE_BIN" --transport usb serve --port "$SERVE_PORT" --no-token "${SERVE_ARGS[@]}" &
+  "$NANOCORE_BIN" --transport usb serve --port "$SERVE_PORT" --no-token \
+    --audio-switch-file "$SPEAKERS_OFF_FILE" "${SERVE_ARGS[@]}" &
   server_pid=$!
   log "server started (pid $server_pid)"
 }
@@ -77,7 +83,9 @@ while true; do
     # audio
     src=$(pactl list short sources | awk '{print $2}' | grep -m1 'alsa_input.*Nanocore.*analog-stereo$')
     sink=$(pactl list short sinks | awk '{print $2}' | grep -m1 "$SPEAKERS")
-    if [ -n "$src" ] && [ -n "$sink" ]; then
+    if [ -e "$SPEAKERS_OFF_FILE" ]; then
+      stop_loopback   # the editor's "Speakers" switch (or `touch` of this file) turns the audio off
+    elif [ -n "$src" ] && [ -n "$sink" ]; then
       if ! alive "$loop_pid"; then
         PIPEWIRE_LATENCY="$QUANTUM/48000" pw-loopback -C "$src" -P "$sink" \
           --capture-props='node.name=nanocore_in node.passive=false' \

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { chainOrderToBlockIds } from '../midi/bridgeTransport';
 import type {
   AssetsInfo,
+  AudioInfo,
   AutosaveInfo,
   BridgeErrorInfo,
   BridgeLink,
@@ -26,6 +27,10 @@ interface DeviceStore {
   hydrated: boolean;
   link: BridgeLink;
   pedalConnected: boolean;
+  /** The server was told to let go of the pedal; it stays disconnected until it is resumed. */
+  released: boolean;
+  /** The speakers switch: only `available` when the server was started by the audio launcher. */
+  audio: AudioInfo;
   readOnly: boolean;
   preset: ServerState['preset'];
   autosave: AutosaveInfo | null;
@@ -44,6 +49,8 @@ interface DeviceStore {
   retypeBlock: (blockId: string, typeId: number) => void;
   setLink: (link: BridgeLink) => void;
   setPedalConnected: (connected: boolean) => void;
+  setReleased: (released: boolean) => void;
+  setAudio: (audio: AudioInfo) => void;
   setAutosave: (patch: Partial<AutosaveInfo> & { state: AutosaveInfo['state'] }) => void;
   setAssets: (assets: AssetsInfo | null) => void;
   setPresets: (presets: PresetListEntry[]) => void;
@@ -56,6 +63,8 @@ const initial = {
   hydrated: false,
   link: 'idle' as BridgeLink,
   pedalConnected: false,
+  released: false,
+  audio: { available: false, on: false } as AudioInfo,
   readOnly: false,
   preset: null,
   autosave: null,
@@ -141,6 +150,8 @@ export const useDeviceStore = create<DeviceStore>((set, get) => ({
       doc,
       hydrated: !!doc.live,
       pedalConnected: doc.connected,
+      released: doc.released === true,
+      audio: doc.audio ?? { available: false, on: false },
       readOnly: doc.read_only,
       preset: doc.preset,
       presets: withActiveName(s.presets, doc.preset),
@@ -178,6 +189,8 @@ export const useDeviceStore = create<DeviceStore>((set, get) => ({
     }),
   setLink: (link) => set({ link }),
   setPedalConnected: (pedalConnected) => set({ pedalConnected }),
+  setReleased: (released) => set({ released }),
+  setAudio: (audio) => set({ audio }),
   setAutosave: (patch) =>
     set((s) => ({
       autosave: {
@@ -235,7 +248,11 @@ export function attachBridge(transport: BridgeTransport, applyRemote: (snapshot:
       if (ops.some((o) => o.op === 'amp' || o.op === 'ir')) refreshAssets();
     }),
     transport.on('autosave', (a) => device().setAutosave(a)),
-    transport.on('connection', ({ connected }) => device().setPedalConnected(connected)),
+    transport.on('connection', ({ connected, released }) => {
+      device().setPedalConnected(connected);
+      device().setReleased(released === true);
+    }),
+    transport.on('audio', (a) => device().setAudio(a)),
     transport.on('error', (e) => device().setError(e)),
   ];
   return () => offs.forEach((off) => off());

@@ -22,6 +22,7 @@ function App() {
   );
   const isBridge = usePatchStore((s) => s.connection.transportKind === 'bridge');
   const pedalConnected = useDeviceStore((s) => s.pedalConnected);
+  const released = useDeviceStore((s) => s.released);
   const setTuner = usePatchStore((s) => s.setTuner);
   const [tunerOn, setTunerOn] = useState(false);
   // The settings panel and the models panel share the bottom left corner: only one is open at a time.
@@ -65,7 +66,7 @@ function App() {
       <div className="app-toasts">
         <BridgeErrorBanner />
 
-        {isBridge && !pedalConnected && (
+        {isBridge && !pedalConnected && !released && (
           <Toast>
             {t('app.noPedalNotice', 'The server is not connected to a pedal right now. It keeps trying; the editor updates when the pedal is back.')}
           </Toast>

@@ -26,7 +26,9 @@
     "noBluetoothOutput": "Non ancora connesso — clicca sul pulsante di trasporto Bluetooth qui sopra per aprire il selettore dispositivi.",
     "transportBridge": "Server NanoCore (questa pagina)",
     "bridgeHint": "Il processo locale nanocore serve gestisce la connessione al pedale. Le modifiche sono applicate subito e salvate automaticamente.",
-    "menu": "Connessione"
+    "menu": "Connessione",
+    "switchPedal": "Pedale",
+    "switchSpeakers": "Altoparlanti"
   },
   "block": {
     "on": "Attivo",

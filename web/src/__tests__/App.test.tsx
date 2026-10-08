@@ -73,6 +73,21 @@ describe('App served by nanocore serve', () => {
     expect(screen.queryByText(/No NanoCore connected yet/)).toBeNull();
   });
 
+  it('says nothing when the pedal was released on purpose, and shows the switch off', async () => {
+    await renderBridged();
+    FakeWebSocket.last().receive({ type: 'connection', connected: false, reason: null, released: true });
+    await waitFor(() => expect(useDeviceStore.getState().released).toBe(true));
+    expect(screen.queryByText(/not connected to a pedal/)).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: /Connection/ }));
+    expect(screen.getByRole('switch', { name: 'Pedal' })).toHaveAttribute('aria-checked', 'false');
+  });
+
+  it('still warns when the pedal is missing and nobody released it', async () => {
+    await renderBridged();
+    FakeWebSocket.last().receive({ type: 'connection', connected: false, reason: 'gone', released: false });
+    await waitFor(() => expect(screen.getByText(/not connected to a pedal/)).toBeInTheDocument());
+  });
+
   it('keeps the MIDI connection panel out of the way until the menu button is used', async () => {
     await renderBridged();
     expect(screen.queryByRole('heading', { name: 'MIDI Connection' })).toBeNull();

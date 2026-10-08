@@ -150,6 +150,9 @@ class ServeOptions:
     backup_dir: Path | None = None
     model_backup_dir: Path | None = None
     ead_decryptor: str | None = None  # command of the user's own .ead decryptor (docs/ead-decryptor.md)
+    # A file whose existence means "the speakers are off". The launcher that routes the pedal's audio
+    # to the speakers (contrib/nanocore-loopback) watches it; the editor's switch creates or removes it.
+    audio_switch_file: Path | None = None
     static_dir: Path | None = None
     verbose: bool = False
 
@@ -600,6 +603,9 @@ class NanocoreServer:
         self.rev = 0
         self.connected = False
         self.connected_event = asyncio.Event()
+        self.released = False  # the owner asked this server to let go of the pedal's USB port
+        self._resume = asyncio.Event()
+        self._wake = asyncio.Event()  # ends the wait before the next reconnection attempt
         self.stopping = False
         self._live: dict[str, Any] | None = None
         self._slot: int | None = None
@@ -666,12 +672,46 @@ class NanocoreServer:
         return {
             "rev": self.rev,
             "connected": self.connected,
+            "released": self.released,
+            "audio": self.audio_view(),
             "transport": self.options.transport,
             "read_only": self.options.read_only,
             "preset": preset,
             "live": copy.deepcopy(self._live),
             "autosave": self._autosave_view(),
         }
+
+    def audio_view(self) -> dict[str, Any]:
+        path = self.options.audio_switch_file
+        return {"available": path is not None, "on": path is not None and not path.exists()}
+
+    def set_audio(self, on: bool) -> dict[str, Any]:
+        path = self.options.audio_switch_file
+        if path is None:
+            raise ApiError(409, "not_available", "this server does not control the audio")
+        try:
+            if on:
+                path.unlink(missing_ok=True)
+            else:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.touch()
+        except OSError as exc:
+            raise ApiError(500, "audio_switch", f"could not change the audio switch: {exc.strerror or exc}") from exc
+        view = self.audio_view()
+        self._publish({"type": "audio", **view})
+        return view
+
+    async def release(self) -> None:
+        """Let go of the pedal: close the USB link and stay away until ``resume``."""
+
+        self.released = True
+        self._resume.clear()
+        self._mark_disconnected("the pedal was released")
+
+    def resume(self) -> None:
+        self.released = False
+        self._resume.set()
+        self._wake.set()
 
     def _autosave_view(self) -> dict[str, Any]:
         view = self.autosaver.snapshot()
@@ -804,11 +844,20 @@ class NanocoreServer:
         if self.connected:
             self.connected = False
             self.connected_event.clear()
-            self._publish({"type": "connection", "connected": False, "reason": redact(reason)})
+            self._publish(
+                {"type": "connection", "connected": False, "reason": redact(reason), "released": self.released}
+            )
 
     async def _supervise(self) -> None:
         delay = 1.0
         while not self.stopping:
+            while self.released and not self.stopping:
+                if self.device.connected:
+                    with contextlib.suppress(Exception):
+                        await self.device.close()
+                await self._resume.wait()
+                delay = 1.0
+            self._wake.clear()
             self._drop.clear()
             self._drop_reason = ""
             try:
@@ -827,8 +876,26 @@ class NanocoreServer:
             if self.device.connected:
                 with contextlib.suppress(Exception):
                     await self.device.close()
-            await self._sleep(delay)
+            if self.released:
+                continue
+            await self._backoff(delay)
             delay = min(delay * 2, MAX_BACKOFF)
+
+    async def _backoff(self, delay: float) -> None:
+        """Wait before the next attempt, or less if the owner resumes in the meantime."""
+
+        async def nap() -> None:
+            await self._sleep(delay)
+
+        loop = asyncio.get_running_loop()
+        sleeper = loop.create_task(nap())
+        waker = loop.create_task(self._wake.wait())
+        try:
+            await asyncio.wait({sleeper, waker}, return_when=asyncio.FIRST_COMPLETED)
+        finally:
+            for task in (sleeper, waker):
+                task.cancel()
+            await asyncio.gather(sleeper, waker, return_exceptions=True)
 
     async def _hydrate(self) -> None:
         catalog = await self.device.catalog()
@@ -845,7 +912,7 @@ class NanocoreServer:
                 log.warning("no baseline for preset %d yet: %s", self._slot + 1, exc)
         self.rev += 1
         self.connected = True
-        self._publish({"type": "connection", "connected": True, "reason": None})
+        self._publish({"type": "connection", "connected": True, "reason": None, "released": False})
         self._publish({"type": "state", "rev": self.rev, "state": self.state_document()})
         self.connected_event.set()
 
@@ -1491,6 +1558,21 @@ def build_routes(server: NanocoreServer) -> list[Any]:
             raise ApiError(429, "rate_limited", "too many edits")
         return _json(await server.write_settings(changes))
 
+    async def release(request: web.Request) -> web.Response:
+        await server.release()
+        return _json({"released": True})
+
+    async def resume(request: web.Request) -> web.Response:
+        server.resume()
+        return _json({"released": False})
+
+    async def post_audio(request: web.Request) -> web.Response:
+        body = await _read_json(request)
+        on = body.get("on") if isinstance(body, dict) else None
+        if not isinstance(on, bool):
+            raise ApiError(400, "validation", "'on' must be true or false")
+        return _json(server.set_audio(on))
+
     async def get_models(request: web.Request) -> web.Response:
         listing = await server.models()
         # Whether an .ead file can be installed here: a decryptor is configured (the web editor says so).
@@ -1560,6 +1642,9 @@ def build_routes(server: NanocoreServer) -> list[Any]:
         web.post("/api/revert", revert),
         web.get("/api/settings", get_settings),
         web.post("/api/settings", post_settings),
+        web.post("/api/release", release),
+        web.post("/api/resume", resume),
+        web.post("/api/audio", post_audio),
         web.get("/api/models", get_models),
         web.get("/api/models/{kind}/{slot}", get_model),
         web.post("/api/models/{kind}/{slot}", post_model),
@@ -1808,6 +1893,12 @@ def build_parser() -> argparse.ArgumentParser:
         "see docs/ead-decryptor.md",
     )
     parser.add_argument(
+        "--audio-switch-file",
+        type=Path,
+        help="file whose existence means the speakers are off, watched by contrib/nanocore-loopback; "
+        "with it the editor shows a switch for the speakers",
+    )
+    parser.add_argument(
         "--model-backup-dir",
         type=Path,
         help="where the old content of an amplifier or IR slot is kept before it is replaced "
@@ -1847,6 +1938,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         backup_dir=args.backup_dir,
         model_backup_dir=args.model_backup_dir,
         ead_decryptor=args.ead_decryptor,
+        audio_switch_file=args.audio_switch_file,
         static_dir=args.static_dir or default_static_dir(),
         verbose=args.verbose,
     )

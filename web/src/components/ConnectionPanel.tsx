@@ -2,8 +2,28 @@ import { useTranslation } from 'react-i18next';
 import { usePatchStore } from '../store/patchStore';
 import type { TransportKind } from '../store/patchStore';
 import { hasBridgeToken } from '../midi/bridgeToken';
+import { bridgeTransport } from '../midi/bridgeTransport';
+import { useDeviceStore } from '../store/deviceState';
 
 const LOCAL_TRANSPORTS: TransportKind[] = ['simulator', 'webmidi', 'bluetooth'];
+
+function SwitchRow({ label, on, onToggle }: { label: string; on: boolean; onToggle: () => void }) {
+  return (
+    <div className="connection-panel__row">
+      <span className="connection-panel__field-label">{label}</span>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={on}
+        aria-label={label}
+        className={`switch ${on ? 'switch--on' : ''}`}
+        onClick={onToggle}
+      >
+        <span className="switch__knob" aria-hidden />
+      </button>
+    </div>
+  );
+}
 
 export function ConnectionPanel() {
   const { t } = useTranslation();
@@ -13,6 +33,9 @@ export function ConnectionPanel() {
   const disconnectBluetooth = usePatchStore((s) => s.disconnectBluetooth);
   const setOutput = usePatchStore((s) => s.setOutput);
   const setChannel = usePatchStore((s) => s.setChannel);
+
+  const released = useDeviceStore((s) => s.released);
+  const audio = useDeviceStore((s) => s.audio);
 
   const isBridge = connection.transportKind === 'bridge';
   const transports = hasBridgeToken() || isBridge ? (['bridge', ...LOCAL_TRANSPORTS] as TransportKind[]) : LOCAL_TRANSPORTS;
@@ -37,6 +60,23 @@ export function ConnectionPanel() {
   return (
     <section className="connection-panel">
       <h2 className="panel-title">{t('connection.title', 'MIDI Connection')}</h2>
+
+      {isBridge && (
+        <>
+          <SwitchRow
+            label={t('connection.switchPedal', 'Pedal')}
+            on={!released}
+            onToggle={() => void (released ? bridgeTransport.resume() : bridgeTransport.release())}
+          />
+          {audio.available && (
+            <SwitchRow
+              label={t('connection.switchSpeakers', 'Speakers')}
+              on={audio.on}
+              onToggle={() => void bridgeTransport.setAudio(!audio.on)}
+            />
+          )}
+        </>
+      )}
 
       <div className="connection-panel__stack">
         <span className="connection-panel__field-label">{t('connection.transport', 'Transport')}</span>

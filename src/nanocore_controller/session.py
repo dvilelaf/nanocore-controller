@@ -95,6 +95,15 @@ class FakeSession:
         self.connect_count += 1
         if self.fail_connect is not None:
             raise self.fail_connect
+        # A new connection starts a new event stream: end-of-stream markers left by an earlier close()
+        # (the real session gives every subscriber its own queue) must not end it at once.
+        kept = []
+        while not self._events.empty():
+            event = self._events.get_nowait()
+            if event is not None:
+                kept.append(event)
+        for event in kept:
+            self._events.put_nowait(event)
         self._connected = True
 
     async def close(self) -> None:

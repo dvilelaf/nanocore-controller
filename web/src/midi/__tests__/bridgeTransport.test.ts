@@ -344,3 +344,60 @@ describe('BridgeTransport error codes', () => {
     expect(seen).toEqual(['a:saving', 'c:false']);
   });
 });
+
+describe('BridgeTransport pedal and speakers switches', () => {
+  it('releases the pedal and resumes it with one request each', async () => {
+    const { bridge, f } = await connected((call) => {
+      if (call.path === '/api/release') return { body: { released: true } };
+      if (call.path === '/api/resume') return { body: { released: false } };
+      return { body: makeState() };
+    });
+    const seen: { connected: boolean; released?: boolean }[] = [];
+    bridge.on('connection', (info) => seen.push(info));
+    await bridge.release();
+    await bridge.resume();
+    expect(f.calls.map((c) => `${c.method} ${c.path}`)).toEqual(['POST /api/release', 'POST /api/resume']);
+    expect(seen[0]).toMatchObject({ connected: false, released: true });
+  });
+
+  it('passes on the released flag of a connection message from the server', async () => {
+    const { bridge, ws } = await connected();
+    const seen: { connected: boolean; released?: boolean }[] = [];
+    bridge.on('connection', (info) => seen.push(info));
+    ws.receive({ type: 'connection', connected: false, reason: 'x', released: true });
+    ws.receive({ type: 'connection', connected: true, reason: null, released: false });
+    expect(seen).toMatchObject([
+      { connected: false, released: true },
+      { connected: true, released: false },
+    ]);
+  });
+
+  it('switches the speakers and reports the new state', async () => {
+    const { bridge, f } = await connected((call) => {
+      if (call.path === '/api/audio') return { body: { available: true, on: false } };
+      return { body: makeState() };
+    });
+    const seen: unknown[] = [];
+    bridge.on('audio', (a) => seen.push(a));
+    await bridge.setAudio(false);
+    expect(f.calls[0]).toMatchObject({ method: 'POST', path: '/api/audio', body: { on: false } });
+    expect(seen).toEqual([{ available: true, on: false }]);
+  });
+
+  it('shows an audio message from the server', async () => {
+    const { bridge, ws } = await connected();
+    const seen: unknown[] = [];
+    bridge.on('audio', (a) => seen.push(a));
+    ws.receive({ type: 'audio', available: true, on: true });
+    expect(seen).toEqual([{ available: true, on: true }]);
+  });
+
+  it('reports a refused switch as an error instead of throwing', async () => {
+    const { bridge, errors } = await connected((call) => {
+      if (call.path === '/api/audio') return { status: 409, body: { error: { code: 'not_available', message: 'no' } } };
+      return { body: makeState() };
+    });
+    await expect(bridge.setAudio(true)).resolves.toBeUndefined();
+    expect(errors).toHaveLength(1);
+  });
+});

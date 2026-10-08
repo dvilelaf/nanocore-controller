@@ -19,9 +19,18 @@ export interface AutosaveInfo {
   error: string | null;
 }
 
+/** The speakers switch: `available` only when the server was started by the launcher that routes the audio. */
+export interface AudioInfo {
+  available: boolean;
+  on: boolean;
+}
+
 export interface ServerState {
   rev: number;
   connected: boolean;
+  /** The owner asked the server to let go of the pedal's USB port. Older servers do not send it. */
+  released?: boolean;
+  audio?: AudioInfo;
   transport?: string;
   read_only: boolean;
   preset: { slot: number; display_number: number; name: string } | null;
@@ -135,7 +144,8 @@ export interface BridgeEvents {
   state: (doc: ServerState) => void;
   patch: (rev: number, ops: EditOp[]) => void;
   autosave: (autosave: Partial<AutosaveInfo> & { state: AutosaveInfo['state'] }) => void;
-  connection: (info: { connected: boolean; reason: string | null }) => void;
+  connection: (info: { connected: boolean; reason: string | null; released?: boolean }) => void;
+  audio: (audio: AudioInfo) => void;
   link: (link: BridgeLink) => void;
   error: (error: BridgeErrorInfo) => void;
 }
@@ -222,6 +232,7 @@ export class BridgeTransport implements MidiTransport {
     patch: new Set(),
     autosave: new Set(),
     connection: new Set(),
+    audio: new Set(),
     link: new Set(),
     error: new Set(),
   };
@@ -393,6 +404,34 @@ export class BridgeTransport implements MidiTransport {
     } catch (err) {
       this.reportError(err, 'revert', false);
       await this.resync();
+    }
+  }
+
+  /** Lets the server go of the pedal's USB port without stopping it: other programs can use the pedal. */
+  async release(): Promise<void> {
+    try {
+      await this.request<{ released: boolean }>('POST', '/api/release');
+      this.emit('connection', { connected: false, reason: null, released: true });
+    } catch (err) {
+      this.reportError(err, 'edit', false);
+    }
+  }
+
+  /** Takes the pedal back; the server reconnects and sends the state. */
+  async resume(): Promise<void> {
+    try {
+      await this.request<{ released: boolean }>('POST', '/api/resume');
+    } catch (err) {
+      this.reportError(err, 'edit', false);
+    }
+  }
+
+  /** Turns the guitar through the PC speakers on or off (the launcher routes the audio). */
+  async setAudio(on: boolean): Promise<void> {
+    try {
+      this.emit('audio', await this.request<AudioInfo>('POST', '/api/audio', { on }));
+    } catch (err) {
+      this.reportError(err, 'edit', false);
     }
   }
 
@@ -661,7 +700,14 @@ export class BridgeTransport implements MidiTransport {
         if (msg.state === 'saved') void this.refreshAutosave();
         break;
       case 'connection':
-        this.emit('connection', { connected: msg.connected === true, reason: (msg.reason as string) ?? null });
+        this.emit('connection', {
+          connected: msg.connected === true,
+          reason: (msg.reason as string) ?? null,
+          released: msg.released === true,
+        });
+        break;
+      case 'audio':
+        this.emit('audio', { available: msg.available === true, on: msg.on === true });
         break;
       case 'error': {
         const e = (msg.error ?? {}) as { code?: string; message?: string; maybe_applied?: boolean };

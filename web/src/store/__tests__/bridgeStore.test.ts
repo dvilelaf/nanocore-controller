@@ -192,3 +192,30 @@ describe('applyOpsToDoc', () => {
     expect(doc.live!.effects[2]).toMatchObject({ variant: 0, params: [0.5] });
   });
 });
+
+describe('pedal and speakers switches in the device store', () => {
+  it('takes released and audio from the state document', async () => {
+    await connect(makeState({ released: true, connected: false, audio: { available: true, on: false } }));
+    const device = useDeviceStore.getState();
+    expect(device.released).toBe(true);
+    expect(device.audio).toEqual({ available: true, on: false });
+  });
+
+  it('defaults to not released and no audio switch for an older server', async () => {
+    await connect(makeState());
+    const device = useDeviceStore.getState();
+    expect(device.released).toBe(false);
+    expect(device.audio).toEqual({ available: false, on: false });
+  });
+
+  it('follows the connection and audio messages', async () => {
+    await connect(makeState({ audio: { available: true, on: true } }));
+    const ws = FakeWebSocket.last();
+    ws.receive({ type: 'connection', connected: false, reason: null, released: true });
+    expect(useDeviceStore.getState()).toMatchObject({ released: true, pedalConnected: false });
+    ws.receive({ type: 'audio', available: true, on: false });
+    expect(useDeviceStore.getState().audio).toEqual({ available: true, on: false });
+    ws.receive({ type: 'connection', connected: true, reason: null, released: false });
+    expect(useDeviceStore.getState()).toMatchObject({ released: false, pedalConnected: true });
+  });
+});

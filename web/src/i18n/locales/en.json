@@ -26,7 +26,9 @@
     "statusNotReady": "Not connected",
     "transportBridge": "NanoCore server (this page)",
     "bridgeHint": "The local nanocore serve process owns the connection to the pedal. Changes are applied live and saved automatically.",
-    "menu": "Connection"
+    "menu": "Connection",
+    "switchPedal": "Pedal",
+    "switchSpeakers": "Speakers"
   },
   "block": {
     "on": "On",

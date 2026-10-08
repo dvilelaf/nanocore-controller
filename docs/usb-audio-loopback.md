@@ -39,7 +39,12 @@ The device names are matched by pattern (`alsa_input.*Nanocore.*analog-stereo` a
 
 The same service also runs the editor's server while the Nanocore is plugged in over USB, and opens it in your browser (`xdg-open`) unless a page already has it open. It asks the server (`GET /api/health` reports `clients`, the pages connected) and gives an open page 8 seconds to reconnect after the server starts, so a tab you left open is reused. Tabs are never opened more often than every 30 seconds. Unplugging the pedal stops the server.
 
-The server and the command line cannot share the USB port. To run a `nanocore` command or a script:
+**Two switches in the editor.** The Connection menu of the web editor has a switch for each half:
+
+- **Pedal:** off makes the server let go of the pedal's USB port (the server keeps running and the editor stays open), so another program can use the pedal; on takes it back and reloads the state. The Connection button turns red while it is off. Nothing is shown or asked.
+- **Speakers:** off stops the guitar through the PC speakers, on brings it back (the launcher watches `~/.cache/nanocore-loopback.speakers-off`; the switch creates or removes it, and `touch`/`rm` do the same by hand). The two switches are independent: you can release the pedal and keep the sound, or mute the speakers (to use headphones) and keep editing. The Speakers switch appears only when the server was started by this launcher.
+
+The server and the command line cannot share the USB port. Releasing the pedal from the editor is the simplest way; to run a `nanocore` command or a script without the page:
 
 ```bash
 touch ~/.cache/nanocore-loopback.pause   # the server stops; the audio keeps running
