@@ -6,7 +6,6 @@
     "noServerNotice": "This page is not served by nanocore serve, so there is no pedal to talk to. Run nanocore serve and open the address it prints."
   },
   "connection": {
-    "title": "MIDI Connection",
     "menu": "Connection",
     "switchPedal": "Pedal",
     "switchSpeakers": "Speakers"

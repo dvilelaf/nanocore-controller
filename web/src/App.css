@@ -62,10 +62,6 @@
   min-width: 0;
 }
 
-.panel-title {
-  margin: 0 0 8px;
-  font-size: 1.1rem;
-}
 
 .panel-subtitle {
   margin: 16px 0 4px;
@@ -153,6 +149,10 @@ input[type='checkbox'] {
   justify-content: space-between;
   gap: 8px;
   margin-top: 10px;
+}
+
+.connection-panel__row:first-child {
+  margin-top: 0;
 }
 
 .connection-panel__field-label {

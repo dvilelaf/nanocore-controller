@@ -90,25 +90,25 @@ describe('App served by nanocore serve', () => {
 
   it('keeps the MIDI connection panel out of the way until the menu button is used', async () => {
     await renderBridged();
-    expect(screen.queryByRole('heading', { name: 'MIDI Connection' })).toBeNull();
+    expect(screen.queryByRole('region', { name: 'Connection' })).toBeNull();
     const button = screen.getByRole('button', { name: /Connection/ });
     expect(button).toHaveAttribute('aria-expanded', 'false');
 
     fireEvent.click(button);
-    expect(screen.getByRole('heading', { name: 'MIDI Connection' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Connection' })).toBeInTheDocument();
     expect(button).toHaveAttribute('aria-expanded', 'true');
 
     fireEvent.keyDown(document, { key: 'Escape' });
-    expect(screen.queryByRole('heading', { name: 'MIDI Connection' })).toBeNull();
+    expect(screen.queryByRole('region', { name: 'Connection' })).toBeNull();
     expect(button).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('closes the connection menu when clicking elsewhere', async () => {
     await renderBridged();
     fireEvent.click(screen.getByRole('button', { name: /Connection/ }));
-    expect(screen.getByRole('heading', { name: 'MIDI Connection' })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Connection' })).toBeInTheDocument();
     fireEvent.mouseDown(document.body);
-    expect(screen.queryByRole('heading', { name: 'MIDI Connection' })).toBeNull();
+    expect(screen.queryByRole('region', { name: 'Connection' })).toBeNull();
   });
 
   it('is a single view: no tab bar, no sidebar, just the chain', async () => {

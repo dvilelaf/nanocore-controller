@@ -29,8 +29,7 @@ export function ConnectionPanel() {
   const audio = useDeviceStore((s) => s.audio);
 
   return (
-    <section className="connection-panel">
-      <h2 className="panel-title">{t('connection.title', 'MIDI Connection')}</h2>
+    <section className="connection-panel" aria-label={t('connection.menu', 'Connection')}>
       {isBridge && (
         <>
           <SwitchRow
