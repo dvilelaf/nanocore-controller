@@ -2,7 +2,7 @@
 
 ## USB MIDI
 
-The attached device enumerates as `Ember Nanocore` (`33c3:1301`) and exposes `Nanocore MIDI 1`. The MIDI guide is compatible with firmware 1.04+.
+The attached device enumerates as `Ember Nanocore` (`33c3:1301`) and exposes `Nanocore MIDI 1`. The MIDI guide is compatible with firmware 1.04+. The pedal used for everything measured in these notes reports firmware **1.10** (read from its settings screen on 2026-10-08); the parameter table in `docs/calibration/` is a 1.10 table (it includes Motion Wah, Velvet Vibrato, Chorus II, Phaser II, Jet Flanger and the Gate and Auto Gate release parameters that 1.10 added). Where this document says "firmware 1.04" it refers to the command set that earlier sessions identified, not to the version of the pedal now. Livtra's release notes (https://livtramusic.com/downloads?device=NANOCORE) list 1.11 as the latest: it fixes CC43 and CC44 for amp and IR switching, Pitch latency, a click when switching the FX2 drive and Bluetooth advertising while powered off.
 
 ### Block controls
 

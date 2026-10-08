@@ -34,13 +34,13 @@ What has been run against a real NANOCORE, what has not, and how to run the rest
 | 2026-10-08 | A BOSS GT-10 on a Raspberry Pi as controller, through `contrib/midi-router/` | `aseqdump` captures of the GT-10, then the router forwarding to the pedal (both on the Pi) | CTL1 = CC80, CTL2 = CC81, EXP SW = CC82 (127 on press, 0 on release), the expression pedal CC7, each patch change = CC0, CC32 and a Program Change numbered along the whole list; the bank buttons send nothing by themselves and move the numbers by 4. Patches 1 to 4, CTL1 as a tuner toggle and the bank pages worked on the pedal. CTL2, EXP SW and the expression pedal were captured but not watched on the pedal through the router. |
 | 2026-10-08 | The loopback service starting the editor | `contrib/nanocore-loopback/` with the pedal plugged in | The server started, a Firefox tab opened, a second start found the page open and opened none, and the pause file stopped the server while the audio went on. Unplugging and replugging the pedal was not tried. |
 
-Earlier sessions verified on the same pedal (firmware 1.04 as reported then, see `docs/protocol.md`): preset recall with read-back, a same-state restore of 20 live operations with verification, and a permanent save followed by a recall round trip.
+Earlier sessions verified on the same pedal (the firmware was then described as 1.04; the pedal reports 1.10 on 2026-10-08, see `docs/protocol.md`): preset recall with read-back, a same-state restore of 20 live operations with verification, and a permanent save followed by a recall round trip.
 
 ## Not verified on hardware
 
 1. **Writing the other global settings** (Bluetooth of the pedal, loopback, USB and Bluetooth volume, MIDI channel): only the input gain has been written on a pedal.
 2. **Whether 48 kHz and a peak of 1.0 are what the pedal expects from an IR** converted from a WAV (the official app's conversion is unknown).
-3. **Other firmware versions.** The mapping table is measured on one pedal; the web editor hides the parameters of a block whose parameter count differs from the table.
+3. **Other firmware versions** (the pedal is on 1.10; 1.11 is out and was not tried). The mapping table is measured on one pedal; the web editor hides the parameters of a block whose parameter count differs from the table.
 4. **Browsers other than Chrome and Firefox.**
 
 ## Running the missing checks
