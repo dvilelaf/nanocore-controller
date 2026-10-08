@@ -1,0 +1,11 @@
+{
+  "output_channel": 1,
+  "drop_bank_select": true,
+  "program_change": {"offset": 0, "max": 63},
+  "cc": {
+    "80": {"action": "momentary", "send": 80},
+    "81": {"action": "pass"},
+    "82": {"action": "pass"},
+    "7": {"action": "map", "send": 60}
+  }
+}
