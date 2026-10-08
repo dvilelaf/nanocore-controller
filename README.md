@@ -150,7 +150,11 @@ The endpoints, error codes and security rules are in [`docs/api.md`](docs/api.md
 
 ## USB audio through the PC speakers
 
-The NANOCORE is also a driver-free USB audio interface. `contrib/nanocore-loopback/` holds a PipeWire user service that routes its input to the PC speakers with low latency whenever the device is plugged in. Setup, tuning and troubleshooting are in [`docs/usb-audio-loopback.md`](docs/usb-audio-loopback.md).
+The NANOCORE is also a driver-free USB audio interface. `contrib/nanocore-loopback/` holds a PipeWire user service that routes its input to the PC speakers with low latency whenever the device is plugged in. The same service starts the web editor's server when the pedal is plugged in and opens it in the browser if no page has it open. Setup, tuning and troubleshooting are in [`docs/usb-audio-loopback.md`](docs/usb-audio-loopback.md).
+
+## A MIDI controller for the pedal
+
+The pedal's USB-C port and Bluetooth are device-only, so a footswitch board or a processor such as a BOSS GT-10 cannot be plugged into it. `contrib/midi-router/` is a small standard-library script for a Raspberry Pi or a computer that reads the controller and forwards its messages to the pedal, dropping the Bank Select that would make the pedal ignore Program Changes. See its README.
 
 Development tests run with:
 

@@ -26,6 +26,12 @@ On/off values 0-63 mean off and 64-127 mean on. Type values are exact IDs, not a
 - CC82: next preset
 - Program Change 0-127: direct preset recall
 
+Measured on a pedal (2026-10-08, channel 1, USB): Program Change `n` recalls the preset with display number `n + 1` (the pedal has 64, so 0 to 63); CC81 and CC82 step back and forward; CC80 with 127 opens the tuner and with 0 closes it. A preset recall takes about 100 ms to show in the snapshot. CC7 (channel volume) changed nothing that can be read from the pedal.
+
+**Bank Select.** After a Bank Select (CC0 or CC32) to a bank other than 0, the pedal ignores every further Program Change, including a plain one, until it receives CC0 = 0 and CC32 = 0. A controller that sends Bank Select with each patch change (a BOSS GT-10 does) therefore has to be filtered; see `contrib/midi-router/`.
+
+**Device-only ports.** The pedal's USB-C port enumerates as a USB device (audio and MIDI) and its Bluetooth is a peripheral; a MIDI controller cannot be plugged into it or paired with it, and a host (a computer, a Raspberry Pi) must forward its messages.
+
 ### Direct parameters
 
 - CC50-56: FX1 gate/compressor
@@ -152,6 +158,10 @@ Other commands the app uses and this project does not (yet) know: `0x41` and `0x
 ### Status codes
 
 A command the pedal does not know is answered with status `0x7e` (126). Other statuses, as the official app words them: `1` bad payload (also a payload of the wrong length), `2` no active write session, `3` slot out of range, `4` flash read/write failed, `5` CRC mismatch.
+
+### Empty presets and the live amplifier and IR
+
+Recalling a preset that holds no effects leaves the amplifier and IR slots of the previously recalled preset in the live state (the amp and IR are loaded only for presets that use them). A backup reads the live state, so the file of an empty preset shows the slots of whichever preset was recalled before it: 16 and 16 after preset 41 in one backup, 29 and 14 after a newly created preset 49 in the next, with nothing written in between. The same thing made a rename of preset 64 store the amp and IR of preset 7. A new preset built on an empty slot should set its amp and IR explicitly, and restoring a backup of an empty preset writes only those inherited numbers.
 
 ### Timing
 
