@@ -26,7 +26,7 @@ On/off values 0-63 mean off and 64-127 mean on. Type values are exact IDs, not a
 - CC82: next preset
 - Program Change 0-127: direct preset recall
 
-Measured on a pedal (2026-10-08, channel 1, USB): Program Change `n` recalls the preset with display number `n + 1` (the pedal has 64, so 0 to 63); CC81 and CC82 step back and forward; CC80 with 127 opens the tuner and with 0 closes it. A preset recall takes about 100 ms to show in the snapshot. CC7 (channel volume) changed nothing that can be read from the pedal.
+Measured on a pedal (2026-10-08, channel 1, USB): Program Change `n` recalls the preset with display number `n + 1` (the pedal has 64, so 0 to 63); CC81 and CC82 step back and forward; CC80 with 127 opens the tuner and with 0 closes it. A preset recall takes about 100 ms to show in the snapshot. CC7 (channel volume) changed nothing that can be read from the pedal, and nothing audible either (swept from 0 to 96 with a guitar playing).
 
 **Bank Select.** After a Bank Select (CC0 or CC32) to a bank other than 0, the pedal ignores every further Program Change, including a plain one, until it receives CC0 = 0 and CC32 = 0. A controller that sends Bank Select with each patch change (a BOSS GT-10 does) therefore has to be filtered; see `contrib/midi-router/`.
 
