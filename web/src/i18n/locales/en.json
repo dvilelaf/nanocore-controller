@@ -1,0 +1,162 @@
+{
+  "app": {
+    "title": "NanoCore Editor",
+    "subtitle": "Unofficial online editor for the Livtra NanoCore mini multi-effect processor",
+    "noHardwareNotice": "No NanoCore connected yet — build your patch and try it in the Simulator. Switch to Web MIDI once your hardware arrives.",
+    "noPedalNotice": "The server is not connected to a pedal right now. It keeps trying; the editor updates when the pedal is back."
+  },
+  "connection": {
+    "title": "MIDI Connection",
+    "transport": "Transport",
+    "transportWebmidi": "Web MIDI (USB / OS-paired Bluetooth)",
+    "transportSimulator": "Simulator (no hardware needed)",
+    "transportBluetooth": "Bluetooth (pair from this page)",
+    "pairingHint": "USB and Bluetooth both work. For Bluetooth here, pair the NanoCore at the OS level first (on macOS: Audio MIDI Setup → MIDI Studio → Bluetooth) — toggle Bluetooth off/on on the device to wake its advertising, and make sure nothing else (e.g. the official phone app) already holds the connection. Once paired, it shows up below like any other port. (Or use the \"Bluetooth\" transport above to pair directly from this page instead.)",
+    "bluetoothHint": "Opens the browser's device picker (Chrome/Edge/Opera only, requires HTTPS or localhost) and connects directly to the NanoCore's Bluetooth MIDI service — no OS-level pairing needed. Toggle Bluetooth off/on on the device first if it doesn't show up, and make sure nothing else (e.g. the official phone app) already holds the connection. Already connected? Selecting this again won't re-prompt — use Disconnect below first to pick a different device.",
+    "disconnect": "Disconnect",
+    "output": "Output",
+    "noOutputs": "No MIDI outputs found. Connect your NanoCore via USB and refresh.",
+    "noBluetoothOutput": "Not connected yet — click the Bluetooth transport button above to open the device picker.",
+    "channel": "Channel",
+    "channelHint": "Must match the NanoCore's own MIDI Channel setting (device channel 0 = Omni, any channel works).",
+    "refresh": "Refresh",
+    "statusReady": "Ready",
+    "statusInitializing": "Connecting…",
+    "statusError": "Error",
+    "statusNotReady": "Not connected",
+    "transportBridge": "NanoCore server (this page)",
+    "bridgeHint": "The local nanocore serve process owns the connection to the pedal. Changes are applied live and saved automatically.",
+    "menu": "Connection"
+  },
+  "block": {
+    "on": "On",
+    "off": "Off",
+    "type": "Type",
+    "power": "Power",
+    "powerOf": "{{name}} power",
+    "typeOf": "{{name}} type",
+    "onPedal": "On the pedal:"
+  },
+  "routing": {
+    "warning": "FX2 is set to {{type}}, which reuses MOD's parameter CCs (68-73). Editing MOD parameters right now will actually change FX2's {{type}} instead."
+  },
+  "preset": {
+    "rename": {
+      "label": "Preset name",
+      "button": "Rename preset",
+      "buttonTitle": "Change the name of the preset (up to 8 characters)",
+      "apply": "Apply name",
+      "applyTitle": "Rename the preset (it stays unsaved until you save)",
+      "cancel": "Cancel rename"
+    },
+    "file": {
+      "download": "Download preset file",
+      "downloadTitle": "Save this preset to a file on your computer",
+      "upload": "Upload preset file",
+      "uploadTitle": "Replace the content of this preset with a file (applied live, not stored until you save)",
+      "uploadConfirm": "Replace the content of the current preset with this file? It is applied live; press save to keep it."
+    }
+  },
+  "tuner": {
+    "toggle": "Tuner",
+    "note": "Sends CC80 (0 = off, 127 = on) to remotely open/close the on-device tuner. The reference pitch (default 440Hz) is only adjustable on the device itself — no CC is documented for it."
+  },
+  "settings": {
+    "toggle": "Settings",
+    "toggleTitle": "Settings of the pedal itself (loopback, input gain, volumes, MIDI channel, Bluetooth)",
+    "title": "Pedal settings",
+    "close": "Close",
+    "loopback": "Loopback",
+    "inputGain": "Input gain",
+    "usbVolume": "USB volume",
+    "btVolume": "Bluetooth volume",
+    "midiChannel": "MIDI channel",
+    "omni": "Omni",
+    "wireless": "Bluetooth of the pedal",
+    "wirelessWarning": "Turning it off drops the Bluetooth connection, also the one this editor may be using.",
+    "readOnly": "The server is read-only: the settings cannot be changed.",
+    "disconnected": "The pedal is not connected.",
+    "readError": "The settings could not be read from the pedal.",
+    "writeError": "The setting could not be changed. Showing what the pedal has."
+  },
+  "models": {
+    "toggle": "Models",
+    "toggleTitle": "Amplifier and cabinet models stored in the pedal: save them to files or replace them",
+    "title": "Amplifier and cabinet models",
+    "close": "Close",
+    "kinds": "Kind of model",
+    "amps": "Amplifiers",
+    "irs": "Cabinets (IR)",
+    "ampNote": "Models read from a pedal can be written here. Livtra's encrypted .ead files need a decryptor that you provide (docs/ead-decryptor.md); none is configured on this server.",
+    "driveNote": "Amplifiers 30 to 37 are drive models",
+    "readOnly": "The server is read-only: nothing can be written.",
+    "loading": "Reading the pedal…",
+    "active": "Active",
+    "download": "Download slot {{slot}} ({{name}})",
+    "downloadTitle": "Save this model to a file on your computer",
+    "upload": "Upload to slot {{slot}} ({{name}})",
+    "uploadAmpTitle": "Replace this model with a .bin file read from a pedal, or an .ead file",
+    "uploadIrTitle": "Replace this cabinet with a .wav or .bin file",
+    "confirm": "Replace '{{name}}' in slot {{slot}}? The old content is kept in a backup on the computer running the server.",
+    "reading": "Reading slot {{slot}}…",
+    "writing": "Writing slot {{slot}}…",
+    "slotError": "Slot {{slot}}: {{message}}",
+    "tooLarge": "The file is larger than 4 MiB.",
+    "readError": "The models could not be read from the pedal.",
+    "ampNoteEad": "Models read from a pedal can be written here, and Livtra's .ead files through your decryptor."
+  },
+  "chain": {
+    "moveLeft": "Move {{name}} earlier in the chain",
+    "moveRight": "Move {{name}} later in the chain",
+    "dragHandle": "Drag to reorder",
+    "position": "{{position}} of {{total}}",
+    "moved": "{{name}} moved to position {{position}} of {{total}}"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "reset": "Reset patch"
+  },
+  "calibration": {
+    "badge": "firmware differs from the measured one",
+    "hint": "The pedal reports a different parameter layout than the one this editor was measured against.",
+    "hidden": "Parameter values are hidden because this pedal reports a different layout than the measured firmware."
+  },
+  "status": {
+    "readOnly": "Read-only",
+    "preset": "Preset"
+  },
+  "autosave": {
+    "dirty": "Unsaved changes",
+    "saving": "Saving…",
+    "error": "Problem saving"
+  },
+  "bridge": {
+    "error": {
+      "unauthorized": "The server rejected the access token. Reload the page using the address printed by nanocore serve.",
+      "readOnly": "The server is in read-only mode. Your change was not sent.",
+      "forbidden": "The server refused the request (host or origin check).",
+      "slotChanged": "The active preset changed on the pedal. Your change was not applied; the editor now shows the current preset.",
+      "rateLimitedLost": "Too many edits at once. The last change was not applied.",
+      "rateLimited": "Too many edits at once. Retrying…",
+      "disconnected": "The pedal is not connected. Your change was not applied.",
+      "timeoutMaybe": "The pedal did not answer. The change may or may not have been applied; the editor shows what the pedal reports.",
+      "timeout": "The pedal did not answer. Your change was not applied.",
+      "deviceStatus": "The pedal refused the change.",
+      "invalid": "The server rejected the change as invalid.",
+      "tooLarge": "The request was too large for the server.",
+      "network": "The editor lost contact with the server.",
+      "unknown": "The server reported an error ({{code}}).",
+      "file": "Preset file: {{detail}}",
+      "invalidFile": "The file is not valid JSON, so it is not a preset file.",
+      "fileTooLarge": "The file is too large to be a preset file.",
+      "dismiss": "Dismiss"
+    }
+  },
+  "theme": {
+    "dark": "Dark mode"
+  }
+}

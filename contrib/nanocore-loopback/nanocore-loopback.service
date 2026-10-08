@@ -1,0 +1,12 @@
+[Unit]
+Description=Nanocore USB input to speakers (low-latency loopback)
+After=pipewire.service pipewire-pulse.service wireplumber.service
+Wants=pipewire-pulse.service
+
+[Service]
+ExecStart=%h/.local/bin/nanocore-loopback
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target

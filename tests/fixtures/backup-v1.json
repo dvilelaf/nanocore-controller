@@ -1,0 +1,36 @@
+{
+  "format": "nanocore-controller-backup",
+  "version": 1,
+  "captured_at": "2026-09-08T00:00:00+00:00",
+  "device": {"address": "00:11:22:33:44:55", "adapter": "hci1"},
+  "preset": {
+    "slot": 8,
+    "display_number": 9,
+    "name": "Fixture",
+    "preset_volume": 84,
+    "amp_slot": 4,
+    "ir_slot": 5,
+    "chain_order": [0, 1, 2, 3, 4, 5, 6, 7],
+    "effects": [
+      {"index": 0, "enabled": false, "variant": 0, "params": []},
+      {"index": 1, "enabled": false, "variant": 0, "params": []},
+      {"index": 2, "enabled": false, "variant": 0, "params": []},
+      {"index": 3, "enabled": false, "variant": 0, "params": []},
+      {"index": 4, "enabled": false, "variant": 0, "params": []},
+      {"index": 5, "enabled": false, "variant": 0, "params": []},
+      {"index": 6, "enabled": false, "variant": 0, "params": []},
+      {"index": 7, "enabled": false, "variant": 0, "params": []}
+    ]
+  },
+  "assets": {
+    "amp": {
+      "slot": 4,
+      "raw": "04 01 01 d2 2f 00 00 17 f8 de 31 1a 1a 00 46 64 35 39 42 6d 00 00 00 00 00 00 00 00 00 00"
+    },
+    "ir": {
+      "slot": 5,
+      "raw": "05 01 01 00 10 00 00 b5 e6 af ed 1a 1a 00 46 64 35 39 42 4d 34 31 30 00 00 00 00 00 00 00"
+    }
+  },
+  "raw_snapshot": "03 08 54 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 08 00 01 02 03 04 05 06 07"
+}

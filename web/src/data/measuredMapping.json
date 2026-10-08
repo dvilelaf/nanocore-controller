@@ -1,0 +1,1101 @@
+{
+ "format": "nanocore-runtime-mapping",
+ "version": 1,
+ "source": "docs/calibration/measurements.json",
+ "captured_at": "2026-10-07T23:27:30+00:00",
+ "runtime_blocks": [
+  "fx1",
+  "fx2",
+  "amp",
+  "cab",
+  "del",
+  "mod",
+  "rev",
+  "eq"
+ ],
+ "chain_order_values": {
+  "verified_round_trip": true,
+  "values": "as sent; their relation to blocks is unverified"
+ },
+ "blocks": {
+  "fx1": {
+   "runtime_index": 0,
+   "types": {
+    "0": {
+     "name": "Gate",
+     "variant": 0,
+     "param_count": 2,
+     "params": [
+      {
+       "index": 0,
+       "cc": 50
+      },
+      {
+       "index": 1,
+       "cc": null
+      }
+     ]
+    },
+    "1": {
+     "name": "Auto Gate",
+     "variant": 1,
+     "param_count": 2,
+     "params": [
+      {
+       "index": 0,
+       "cc": null
+      },
+      {
+       "index": 1,
+       "cc": null
+      }
+     ]
+    },
+    "2": {
+     "name": "Gate + Compressor (NC-Com)",
+     "variant": 2,
+     "param_count": 7,
+     "params": [
+      {
+       "index": 0,
+       "cc": 50
+      },
+      {
+       "index": 1,
+       "cc": 51
+      },
+      {
+       "index": 2,
+       "cc": 52
+      },
+      {
+       "index": 3,
+       "cc": 53
+      },
+      {
+       "index": 4,
+       "cc": 54
+      },
+      {
+       "index": 5,
+       "cc": 55
+      },
+      {
+       "index": 6,
+       "cc": 56
+      }
+     ]
+    },
+    "3": {
+     "name": "Compressor",
+     "variant": 3,
+     "param_count": 6,
+     "params": [
+      {
+       "index": 0,
+       "cc": 51
+      },
+      {
+       "index": 1,
+       "cc": 52
+      },
+      {
+       "index": 2,
+       "cc": 53
+      },
+      {
+       "index": 3,
+       "cc": 54
+      },
+      {
+       "index": 4,
+       "cc": 55
+      },
+      {
+       "index": 5,
+       "cc": 56
+      }
+     ]
+    }
+   }
+  },
+  "fx2": {
+   "runtime_index": 1,
+   "types": {
+    "0": {
+     "name": "Scream",
+     "variant": 0,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 57
+      },
+      {
+       "index": 1,
+       "cc": 58
+      },
+      {
+       "index": 2,
+       "cc": 59
+      }
+     ]
+    },
+    "1": {
+     "name": "Klone",
+     "variant": 1,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 57
+      },
+      {
+       "index": 1,
+       "cc": 58
+      },
+      {
+       "index": 2,
+       "cc": 59
+      }
+     ]
+    },
+    "2": {
+     "name": "OCD",
+     "variant": 2,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 57
+      },
+      {
+       "index": 1,
+       "cc": 58
+      },
+      {
+       "index": 2,
+       "cc": 59
+      }
+     ]
+    },
+    "3": {
+     "name": "DS2",
+     "variant": 3,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 57
+      },
+      {
+       "index": 1,
+       "cc": 58
+      },
+      {
+       "index": 2,
+       "cc": 59
+      }
+     ]
+    },
+    "4": {
+     "name": "PIFUZZ",
+     "variant": 4,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 57
+      },
+      {
+       "index": 1,
+       "cc": 58
+      },
+      {
+       "index": 2,
+       "cc": 59
+      }
+     ]
+    },
+    "5": {
+     "name": "Range",
+     "variant": 5,
+     "param_count": 1,
+     "params": [
+      {
+       "index": 0,
+       "cc": 57
+      }
+     ]
+    },
+    "6": {
+     "name": "XAC",
+     "variant": 6,
+     "param_count": 1,
+     "params": [
+      {
+       "index": 0,
+       "cc": 57
+      }
+     ]
+    },
+    "7": {
+     "name": "Fiman",
+     "variant": 7,
+     "param_count": 1,
+     "params": [
+      {
+       "index": 0,
+       "cc": 57
+      }
+     ]
+    },
+    "8": {
+     "name": "Pitch",
+     "variant": 8,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      }
+     ]
+    },
+    "9": {
+     "name": "Envelope Wah",
+     "variant": 9,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      }
+     ]
+    },
+    "10": {
+     "name": "Wah",
+     "variant": 10,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      },
+      {
+       "index": 4,
+       "cc": 72
+      }
+     ]
+    },
+    "11": {
+     "name": "Motion Wah",
+     "variant": 11,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      }
+     ]
+    }
+   }
+  },
+  "amp": {
+   "runtime_index": 2,
+   "types": {
+    "*": {
+     "name": "BogXTC1",
+     "variant": 0,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 60
+      },
+      {
+       "index": 1,
+       "cc": 61
+      },
+      {
+       "index": 2,
+       "cc": 62
+      },
+      {
+       "index": 3,
+       "cc": 63
+      },
+      {
+       "index": 4,
+       "cc": 64
+      }
+     ]
+    }
+   }
+  },
+  "cab": {
+   "runtime_index": 3,
+   "types": {
+    "*": {
+     "name": "Bog412A",
+     "variant": 0,
+     "param_count": 2,
+     "params": [
+      {
+       "index": 0,
+       "cc": 65
+      },
+      {
+       "index": 1,
+       "cc": 66
+      }
+     ]
+    }
+   }
+  },
+  "mod": {
+   "runtime_index": 5,
+   "types": {
+    "0": {
+     "name": "Chorus",
+     "variant": 0,
+     "param_count": 2,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      }
+     ]
+    },
+    "1": {
+     "name": "Phaser",
+     "variant": 1,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      }
+     ]
+    },
+    "2": {
+     "name": "Flanger",
+     "variant": 2,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      }
+     ]
+    },
+    "3": {
+     "name": "Tremolo",
+     "variant": 3,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      },
+      {
+       "index": 4,
+       "cc": 72
+      }
+     ]
+    },
+    "4": {
+     "name": "Vibrato",
+     "variant": 4,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      }
+     ]
+    },
+    "10": {
+     "name": "Velvet Vibrato",
+     "variant": 10,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      },
+      {
+       "index": 4,
+       "cc": 72
+      }
+     ]
+    },
+    "11": {
+     "name": "Chorus II",
+     "variant": 11,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      }
+     ]
+    },
+    "12": {
+     "name": "Phaser II",
+     "variant": 12,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      }
+     ]
+    },
+    "17": {
+     "name": "Jet Flanger",
+     "variant": 17,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 68
+      },
+      {
+       "index": 1,
+       "cc": 69
+      },
+      {
+       "index": 2,
+       "cc": 70
+      },
+      {
+       "index": 3,
+       "cc": 71
+      },
+      {
+       "index": 4,
+       "cc": 72
+      }
+     ]
+    }
+   }
+  },
+  "del": {
+   "runtime_index": 4,
+   "types": {
+    "0": {
+     "name": "BBD",
+     "variant": 0,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 74
+      },
+      {
+       "index": 1,
+       "cc": 75
+      },
+      {
+       "index": 2,
+       "cc": 76
+      },
+      {
+       "index": 3,
+       "cc": 77
+      }
+     ]
+    },
+    "1": {
+     "name": "Digital",
+     "variant": 1,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 74
+      },
+      {
+       "index": 1,
+       "cc": 75
+      },
+      {
+       "index": 2,
+       "cc": 76
+      }
+     ]
+    },
+    "2": {
+     "name": "Duck",
+     "variant": 2,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 74
+      },
+      {
+       "index": 1,
+       "cc": 75
+      },
+      {
+       "index": 2,
+       "cc": 76
+      },
+      {
+       "index": 3,
+       "cc": 77
+      }
+     ]
+    },
+    "3": {
+     "name": "Ice",
+     "variant": 3,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 74
+      },
+      {
+       "index": 1,
+       "cc": 75
+      },
+      {
+       "index": 2,
+       "cc": 76
+      },
+      {
+       "index": 3,
+       "cc": 77
+      }
+     ]
+    },
+    "4": {
+     "name": "Reverse",
+     "variant": 4,
+     "param_count": 3,
+     "params": [
+      {
+       "index": 0,
+       "cc": 74
+      },
+      {
+       "index": 1,
+       "cc": 75
+      },
+      {
+       "index": 2,
+       "cc": 76
+      }
+     ]
+    },
+    "5": {
+     "name": "LoFi",
+     "variant": 5,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 74
+      },
+      {
+       "index": 1,
+       "cc": 75
+      },
+      {
+       "index": 2,
+       "cc": 76
+      },
+      {
+       "index": 3,
+       "cc": 77
+      },
+      {
+       "index": 4,
+       "cc": 78
+      }
+     ]
+    },
+    "6": {
+     "name": "Smear",
+     "variant": 6,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 74
+      },
+      {
+       "index": 1,
+       "cc": 75
+      },
+      {
+       "index": 2,
+       "cc": 76
+      },
+      {
+       "index": 3,
+       "cc": 77
+      },
+      {
+       "index": 4,
+       "cc": 78
+      }
+     ]
+    },
+    "7": {
+     "name": "Mod Delay",
+     "variant": 7,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 74
+      },
+      {
+       "index": 1,
+       "cc": 75
+      },
+      {
+       "index": 2,
+       "cc": 76
+      },
+      {
+       "index": 3,
+       "cc": 77
+      },
+      {
+       "index": 4,
+       "cc": 78
+      }
+     ]
+    }
+   }
+  },
+  "rev": {
+   "runtime_index": 6,
+   "types": {
+    "0": {
+     "name": "Room",
+     "variant": 0,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 85
+      },
+      {
+       "index": 1,
+       "cc": 86
+      },
+      {
+       "index": 2,
+       "cc": 87
+      },
+      {
+       "index": 3,
+       "cc": 88
+      },
+      {
+       "index": 4,
+       "cc": 89
+      }
+     ]
+    },
+    "1": {
+     "name": "Plate",
+     "variant": 1,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 85
+      },
+      {
+       "index": 1,
+       "cc": 86
+      },
+      {
+       "index": 2,
+       "cc": 87
+      },
+      {
+       "index": 3,
+       "cc": 88
+      },
+      {
+       "index": 4,
+       "cc": 89
+      }
+     ]
+    },
+    "2": {
+     "name": "Hall",
+     "variant": 2,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 85
+      },
+      {
+       "index": 1,
+       "cc": 86
+      },
+      {
+       "index": 2,
+       "cc": 87
+      },
+      {
+       "index": 3,
+       "cc": 88
+      },
+      {
+       "index": 4,
+       "cc": 89
+      }
+     ]
+    },
+    "3": {
+     "name": "Concert",
+     "variant": 3,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 85
+      },
+      {
+       "index": 1,
+       "cc": 86
+      },
+      {
+       "index": 2,
+       "cc": 87
+      },
+      {
+       "index": 3,
+       "cc": 88
+      },
+      {
+       "index": 4,
+       "cc": 89
+      }
+     ]
+    },
+    "4": {
+     "name": "Shimmer",
+     "variant": 5,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 85
+      },
+      {
+       "index": 1,
+       "cc": 86
+      },
+      {
+       "index": 2,
+       "cc": 87
+      },
+      {
+       "index": 3,
+       "cc": 88
+      },
+      {
+       "index": 4,
+       "cc": 89
+      }
+     ]
+    },
+    "5": {
+     "name": "Cloud",
+     "variant": 6,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 85
+      },
+      {
+       "index": 1,
+       "cc": 86
+      },
+      {
+       "index": 2,
+       "cc": 87
+      },
+      {
+       "index": 3,
+       "cc": 88
+      },
+      {
+       "index": 4,
+       "cc": 89
+      }
+     ]
+    },
+    "6": {
+     "name": "Spring",
+     "variant": 7,
+     "param_count": 5,
+     "params": [
+      {
+       "index": 0,
+       "cc": 85
+      },
+      {
+       "index": 1,
+       "cc": 86
+      },
+      {
+       "index": 2,
+       "cc": 87
+      },
+      {
+       "index": 3,
+       "cc": 88
+      },
+      {
+       "index": 4,
+       "cc": 89
+      }
+     ]
+    }
+   }
+  },
+  "eq": {
+   "runtime_index": 7,
+   "types": {
+    "0": {
+     "name": "3-band EQ",
+     "variant": 0,
+     "param_count": 4,
+     "params": [
+      {
+       "index": 0,
+       "cc": 91
+      },
+      {
+       "index": 1,
+       "cc": 92
+      },
+      {
+       "index": 2,
+       "cc": 93
+      },
+      {
+       "index": 3,
+       "cc": 94
+      }
+     ]
+    },
+    "1": {
+     "name": "6-band EQ",
+     "variant": 1,
+     "param_count": 7,
+     "params": [
+      {
+       "index": 0,
+       "cc": 91
+      },
+      {
+       "index": 1,
+       "cc": 92
+      },
+      {
+       "index": 2,
+       "cc": 93
+      },
+      {
+       "index": 3,
+       "cc": 94
+      },
+      {
+       "index": 4,
+       "cc": 95
+      },
+      {
+       "index": 5,
+       "cc": 96
+      },
+      {
+       "index": 6,
+       "cc": 97
+      }
+     ]
+    },
+    "2": {
+     "name": "8-band EQ",
+     "variant": 2,
+     "param_count": 9,
+     "params": [
+      {
+       "index": 0,
+       "cc": 91
+      },
+      {
+       "index": 1,
+       "cc": 92
+      },
+      {
+       "index": 2,
+       "cc": 93
+      },
+      {
+       "index": 3,
+       "cc": 94
+      },
+      {
+       "index": 4,
+       "cc": 95
+      },
+      {
+       "index": 5,
+       "cc": 96
+      },
+      {
+       "index": 6,
+       "cc": 97
+      },
+      {
+       "index": 7,
+       "cc": 33
+      },
+      {
+       "index": 8,
+       "cc": null
+      }
+     ]
+    }
+   }
+  }
+ }
+}

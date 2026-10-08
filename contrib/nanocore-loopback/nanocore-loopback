@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Route the Livtra Nanocore USB input to the Q Acoustics M20 speakers while both are present.
+QUANTUM=64
+SINK_VOL=70%
+STREAM_VOL=160%
+
+pid=""
+stop() { [ -n "$pid" ] && kill "$pid" 2>/dev/null; pid=""; }
+trap 'stop; exit 0' TERM INT
+
+while true; do
+  src=$(pactl list short sources | awk '{print $2}' | grep -m1 'alsa_input.*Nanocore.*analog-stereo$')
+  sink=$(pactl list short sinks | awk '{print $2}' | grep -m1 'Q_Acoustics.*analog-stereo$')
+  if [ -n "$src" ] && [ -n "$sink" ]; then
+    if [ -z "$pid" ] || ! kill -0 "$pid" 2>/dev/null; then
+      PIPEWIRE_LATENCY="$QUANTUM/48000" pw-loopback -C "$src" -P "$sink" \
+        --capture-props='node.name=nanocore_in node.passive=false' \
+        --playback-props='node.name=nanocore_out' &
+      pid=$!
+      sleep 2
+      pactl set-sink-volume "$sink" "$SINK_VOL"
+      id=$(pactl list sink-inputs | grep -B30 'node.name = "nanocore_out"' | grep -oE '#[0-9]+' | tail -1 | tr -d '#')
+      [ -n "$id" ] && pactl set-sink-input-volume "$id" "$STREAM_VOL"
+    fi
+  else
+    stop
+  fi
+  sleep 2
+done

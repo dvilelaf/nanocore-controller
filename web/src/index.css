@@ -1,0 +1,114 @@
+:root {
+  color-scheme: light;
+  --bg: #f4f5f7;
+  --bg-elevated: #ffffff;
+  --bg-inset: #eceef2;
+  --border: #d7dae1;
+  --border-strong: #8b9099;
+  --text: #16181d;
+  --text-muted: #5b616e;
+  --accent: #0b6bcb;
+  --accent-contrast: #ffffff;
+  --ok: #227a45;
+  --ok-contrast: #ffffff;
+  --danger-contrast: #ffffff;
+  --pending: #b7791f;
+  --pending-contrast: #ffffff;
+  --danger: #c94141;
+  --warn-bg: #e8f2fc;
+  --warn-border: #8dbbe8;
+  --warn-text: #0a4c8f;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius: 10px;
+}
+
+/* Dark theme in the colours of the default VS Code dark theme (not pure black). Applied when the
+   user picks it (data-theme="dark"), or by the system preference until they have chosen. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #1e1e1e;
+  --bg-elevated: #252526;
+  --bg-inset: #2d2d30;
+  --border: #3c3c3c;
+  --border-strong: #6b6b6b;
+  --text: #d4d4d4;
+  --text-muted: #9d9d9d;
+  --accent: #4aa3ff;
+  --accent-contrast: #1e1e1e;
+  --ok: #4ec9b0;
+  --ok-contrast: #1e1e1e;
+  --danger-contrast: #1e1e1e;
+  --pending: #d7ba7d;
+  --pending-contrast: #1e1e1e;
+  --danger: #f48771;
+  --warn-bg: #1c2c3d;
+  --warn-border: #2f5f93;
+  --warn-text: #a9d0ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg: #1e1e1e;
+    --bg-elevated: #252526;
+    --bg-inset: #2d2d30;
+    --border: #3c3c3c;
+    --border-strong: #6b6b6b;
+    --text: #d4d4d4;
+    --text-muted: #9d9d9d;
+    --accent: #4aa3ff;
+    --accent-contrast: #1e1e1e;
+    --ok: #4ec9b0;
+    --ok-contrast: #1e1e1e;
+    --danger-contrast: #1e1e1e;
+    --pending: #d7ba7d;
+    --pending-contrast: #1e1e1e;
+    --danger: #f48771;
+    --warn-bg: #1c2c3d;
+    --warn-border: #2f5f93;
+    --warn-text: #a9d0ff;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+select,
+input {
+  font-family: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: var(--accent);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

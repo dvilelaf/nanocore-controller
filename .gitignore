@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+dist/
+build/
+*.egg-info/
+work/
+backups/
+*.apk
+*.exe
+
+# Web editor
+web/node_modules/
+web/dist*/
+web/.vite/
+src/nanocore_controller/web_dist/
+
+# local agent worktrees and notes
+.claude/

@@ -1,0 +1,3813 @@
+{
+ "source": "web/src/data (nanocoreSpec)",
+ "blocks": [
+  {
+   "id": "fx1",
+   "name": "FX1",
+   "onOffCC": 20,
+   "typeCC": 40,
+   "types": [
+    {
+     "id": 0,
+     "name": "Gate",
+     "params": [
+      {
+       "id": "threshold",
+       "cc": 50,
+       "kind": "range",
+       "min": -100,
+       "max": 0,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 1,
+     "name": "Auto Gate",
+     "params": []
+    },
+    {
+     "id": 2,
+     "name": "Gate + Compressor (NC-Com)",
+     "params": [
+      {
+       "id": "gate_threshold",
+       "cc": 50,
+       "kind": "range",
+       "min": -100,
+       "max": 0,
+       "options": null
+      },
+      {
+       "id": "comp_threshold",
+       "cc": 51,
+       "kind": "range",
+       "min": -60,
+       "max": 0,
+       "options": null
+      },
+      {
+       "id": "ratio",
+       "cc": 52,
+       "kind": "range",
+       "min": 1.1,
+       "max": 20,
+       "options": null
+      },
+      {
+       "id": "knee",
+       "cc": 53,
+       "kind": "range",
+       "min": 0,
+       "max": 24,
+       "options": null
+      },
+      {
+       "id": "attack",
+       "cc": 54,
+       "kind": "range",
+       "min": 0,
+       "max": 200,
+       "options": null
+      },
+      {
+       "id": "release",
+       "cc": 55,
+       "kind": "range",
+       "min": 0,
+       "max": 1000,
+       "options": null
+      },
+      {
+       "id": "makeup",
+       "cc": 56,
+       "kind": "range",
+       "min": -24,
+       "max": 24,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "Compressor",
+     "params": [
+      {
+       "id": "comp_threshold",
+       "cc": 51,
+       "kind": "range",
+       "min": -60,
+       "max": 0,
+       "options": null
+      },
+      {
+       "id": "ratio",
+       "cc": 52,
+       "kind": "range",
+       "min": 1.1,
+       "max": 20,
+       "options": null
+      },
+      {
+       "id": "knee",
+       "cc": 53,
+       "kind": "range",
+       "min": 0,
+       "max": 24,
+       "options": null
+      },
+      {
+       "id": "attack",
+       "cc": 54,
+       "kind": "range",
+       "min": 0,
+       "max": 200,
+       "options": null
+      },
+      {
+       "id": "release",
+       "cc": 55,
+       "kind": "range",
+       "min": 0,
+       "max": 1000,
+       "options": null
+      },
+      {
+       "id": "makeup",
+       "cc": 56,
+       "kind": "range",
+       "min": -24,
+       "max": 24,
+       "options": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "fx2",
+   "name": "FX2",
+   "onOffCC": 21,
+   "typeCC": 41,
+   "types": [
+    {
+     "id": 0,
+     "name": "Scream",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 57,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 58,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 59,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 1,
+     "name": "Klone",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 57,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 58,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 59,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "OCD",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 57,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 58,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 59,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "DS2",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 57,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 58,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 59,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "PIFUZZ",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 57,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 58,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 59,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "Range",
+     "params": [
+      {
+       "id": "boost",
+       "cc": 57,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "XAC",
+     "params": [
+      {
+       "id": "boost",
+       "cc": 57,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 7,
+     "name": "Fiman",
+     "params": [
+      {
+       "id": "boost",
+       "cc": 57,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 8,
+     "name": "Pitch",
+     "params": [
+      {
+       "id": "pitch",
+       "cc": 68,
+       "kind": "range",
+       "min": -12,
+       "max": 12,
+       "options": null
+      },
+      {
+       "id": "fine",
+       "cc": 69,
+       "kind": "range",
+       "min": -1,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 70,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 9,
+     "name": "Envelope Wah",
+     "params": [
+      {
+       "id": "freq",
+       "cc": 68,
+       "kind": "range",
+       "min": 10,
+       "max": 20000,
+       "options": null
+      },
+      {
+       "id": "env",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 20000,
+       "options": null
+      },
+      {
+       "id": "q",
+       "cc": 70,
+       "kind": "range",
+       "min": 0.1,
+       "max": 20,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 10,
+     "name": "Wah",
+     "params": [
+      {
+       "id": "freq",
+       "cc": 68,
+       "kind": "range",
+       "min": 163,
+       "max": 3500,
+       "options": null
+      },
+      {
+       "id": "sweep",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "rate",
+       "cc": 70,
+       "kind": "range",
+       "min": 0,
+       "max": 8,
+       "options": null
+      },
+      {
+       "id": "shape",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 72,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 73,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 11,
+     "name": "Motion Wah",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "voice",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "amp",
+   "name": "AMP",
+   "onOffCC": 23,
+   "typeCC": 43,
+   "types": [
+    {
+     "id": 0,
+     "name": "BogXTC1",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 1,
+     "name": "BogXTC2",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "ENGP1",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "ENGP2",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "Fd59Bm",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "Fd65Dk",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "Hiw103",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 7,
+     "name": "MarDSL1",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 8,
+     "name": "MarDSL2",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 9,
+     "name": "Mar8001",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 10,
+     "name": "Mar8002",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 11,
+     "name": "MesR1",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 12,
+     "name": "MesR2",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 13,
+     "name": "MesR3",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 14,
+     "name": "OgG120",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 15,
+     "name": "Pey51501",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 16,
+     "name": "Pey51502",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 17,
+     "name": "Pey6505",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 18,
+     "name": "RanT21",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 19,
+     "name": "RanT22",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 20,
+     "name": "RoJC120",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 21,
+     "name": "SLO1001",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 22,
+     "name": "SLO1002",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 23,
+     "name": "SLO1003",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 24,
+     "name": "VXAC30",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 25,
+     "name": "ApSVTVR",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 26,
+     "name": "ApSVTCL",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 27,
+     "name": "Adn900",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 28,
+     "name": "Hiw320",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 29,
+     "name": "MarSup",
+     "params": [
+      {
+       "id": "gain",
+       "cc": 60,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "bass",
+       "cc": 61,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 62,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "treble",
+       "cc": 63,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 64,
+       "kind": "range",
+       "min": -10,
+       "max": 10,
+       "options": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cab",
+   "name": "CAB",
+   "onOffCC": 24,
+   "typeCC": 44,
+   "types": [
+    {
+     "id": 0,
+     "name": "Bog412A",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 1,
+     "name": "Bog412B",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "Eng412A",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "Eng412B",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "FdTR212",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "Fd59BM410",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "Hiw412",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 7,
+     "name": "Mar412A",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 8,
+     "name": "Mar412B",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 9,
+     "name": "Mar96412A",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 10,
+     "name": "Mar96412B",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 11,
+     "name": "Mes412A",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 12,
+     "name": "Mes412B",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 13,
+     "name": "Mes412C",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 14,
+     "name": "Og412",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 15,
+     "name": "pey412A",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 16,
+     "name": "pey412B",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 17,
+     "name": "peyVk412",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 18,
+     "name": "Ran112A",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 19,
+     "name": "Ran112B",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 20,
+     "name": "Ran112C",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 21,
+     "name": "SLO412A",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 22,
+     "name": "SLO412B",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 23,
+     "name": "SLO412C",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 24,
+     "name": "AC30212",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 25,
+     "name": "AP810",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 26,
+     "name": "Ap410",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 27,
+     "name": "Adn410",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 28,
+     "name": "HiwB410",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 29,
+     "name": "Mar412",
+     "params": [
+      {
+       "id": "low_cut",
+       "cc": 65,
+       "kind": "range",
+       "min": 20,
+       "max": 500,
+       "options": null
+      },
+      {
+       "id": "high_cut",
+       "cc": 66,
+       "kind": "range",
+       "min": 2000,
+       "max": 20000,
+       "options": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "mod",
+   "name": "MOD",
+   "onOffCC": 25,
+   "typeCC": 45,
+   "types": [
+    {
+     "id": 0,
+     "name": "Chorus",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0.1,
+       "max": 3.74,
+       "options": null
+      },
+      {
+       "id": "depth",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 70,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 1,
+     "name": "Phaser",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0.05,
+       "max": 5,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 69,
+       "kind": "range",
+       "min": -95,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 70,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "Flanger",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0.05,
+       "max": 5,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 69,
+       "kind": "range",
+       "min": -95,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 70,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "Tremolo",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0.01,
+       "max": 20,
+       "options": null
+      },
+      {
+       "id": "depth",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "wave",
+       "cc": 70,
+       "kind": "enum",
+       "min": null,
+       "max": null,
+       "options": 4
+      },
+      {
+       "id": "smooth",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 40,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 72,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 73,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "Vibrato",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0.01,
+       "max": 20,
+       "options": null
+      },
+      {
+       "id": "depth",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 20,
+       "options": null
+      },
+      {
+       "id": "wave",
+       "cc": 70,
+       "kind": "enum",
+       "min": null,
+       "max": null,
+       "options": 4
+      },
+      {
+       "id": "mix",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 72,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 10,
+     "name": "Velvet Vibrato",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0.45,
+       "max": 10,
+       "options": null
+      },
+      {
+       "id": "wave",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "voice",
+       "cc": 70,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "depth",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 72,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 11,
+     "name": "Chorus II",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "amount",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 70,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 71,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 12,
+     "name": "Phaser II",
+     "params": []
+    },
+    {
+     "id": 17,
+     "name": "Jet Flanger",
+     "params": [
+      {
+       "id": "rate",
+       "cc": 68,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      },
+      {
+       "id": "depth",
+       "cc": 69,
+       "kind": "range",
+       "min": 0,
+       "max": 1,
+       "options": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "del",
+   "name": "DEL",
+   "onOffCC": 26,
+   "typeCC": 46,
+   "types": [
+    {
+     "id": 0,
+     "name": "BBD",
+     "params": [
+      {
+       "id": "delay",
+       "cc": 74,
+       "kind": "range",
+       "min": 1,
+       "max": 2000,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 75,
+       "kind": "range",
+       "min": 0,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "age",
+       "cc": 76,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 77,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 78,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 1,
+     "name": "Digital",
+     "params": [
+      {
+       "id": "time",
+       "cc": 74,
+       "kind": "range",
+       "min": 0.1,
+       "max": 3000,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 75,
+       "kind": "range",
+       "min": 0,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 76,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 77,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "Duck",
+     "params": [
+      {
+       "id": "time",
+       "cc": 74,
+       "kind": "range",
+       "min": 0.1,
+       "max": 3000,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 75,
+       "kind": "range",
+       "min": 0,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "filter",
+       "cc": 76,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 77,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 78,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "Ice",
+     "params": [
+      {
+       "id": "time",
+       "cc": 74,
+       "kind": "range",
+       "min": 0.1,
+       "max": 3000,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 75,
+       "kind": "range",
+       "min": 0,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "interval",
+       "cc": 76,
+       "kind": "range",
+       "min": -12,
+       "max": 12,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 77,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 78,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "Reverse",
+     "params": [
+      {
+       "id": "time",
+       "cc": 74,
+       "kind": "range",
+       "min": 0.1,
+       "max": 3000,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 75,
+       "kind": "range",
+       "min": 0,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 76,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 77,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "LoFi",
+     "params": [
+      {
+       "id": "time",
+       "cc": 74,
+       "kind": "range",
+       "min": 2,
+       "max": 3000,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 75,
+       "kind": "range",
+       "min": 0,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "bit_depth",
+       "cc": 76,
+       "kind": "range",
+       "min": 4,
+       "max": 16,
+       "options": null
+      },
+      {
+       "id": "lofi_mix",
+       "cc": 77,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 78,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 79,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "Smear",
+     "params": [
+      {
+       "id": "time",
+       "cc": 74,
+       "kind": "range",
+       "min": 0.1,
+       "max": 3000,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 75,
+       "kind": "range",
+       "min": 0,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "smear",
+       "cc": 76,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "filter",
+       "cc": 77,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 78,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 79,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 7,
+     "name": "Mod Delay",
+     "params": [
+      {
+       "id": "time",
+       "cc": 74,
+       "kind": "range",
+       "min": 0.1,
+       "max": 3000,
+       "options": null
+      },
+      {
+       "id": "feedback",
+       "cc": 75,
+       "kind": "range",
+       "min": 0,
+       "max": 95,
+       "options": null
+      },
+      {
+       "id": "mod_depth",
+       "cc": 76,
+       "kind": "range",
+       "min": 0,
+       "max": 20,
+       "options": null
+      },
+      {
+       "id": "mod_rate",
+       "cc": 77,
+       "kind": "range",
+       "min": 0.05,
+       "max": 5,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 78,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 79,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rev",
+   "name": "REV",
+   "onOffCC": 27,
+   "typeCC": 47,
+   "types": [
+    {
+     "id": 0,
+     "name": "Room",
+     "params": [
+      {
+       "id": "decay",
+       "cc": 85,
+       "kind": "range",
+       "min": 0.5,
+       "max": 12,
+       "options": null
+      },
+      {
+       "id": "pre_delay",
+       "cc": 86,
+       "kind": "range",
+       "min": 0,
+       "max": 80,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 87,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mod",
+       "cc": 88,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 89,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 90,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 1,
+     "name": "Plate",
+     "params": [
+      {
+       "id": "decay",
+       "cc": 85,
+       "kind": "range",
+       "min": 0.5,
+       "max": 12,
+       "options": null
+      },
+      {
+       "id": "pre_delay",
+       "cc": 86,
+       "kind": "range",
+       "min": 0,
+       "max": 80,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 87,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mod",
+       "cc": 88,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 89,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 90,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "Hall",
+     "params": [
+      {
+       "id": "decay",
+       "cc": 85,
+       "kind": "range",
+       "min": 0.5,
+       "max": 12,
+       "options": null
+      },
+      {
+       "id": "pre_delay",
+       "cc": 86,
+       "kind": "range",
+       "min": 0,
+       "max": 80,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 87,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "lf_damp",
+       "cc": 88,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 89,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 90,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 3,
+     "name": "Concert",
+     "params": [
+      {
+       "id": "decay",
+       "cc": 85,
+       "kind": "range",
+       "min": 0.5,
+       "max": 12,
+       "options": null
+      },
+      {
+       "id": "pre_delay",
+       "cc": 86,
+       "kind": "range",
+       "min": 0,
+       "max": 80,
+       "options": null
+      },
+      {
+       "id": "hf_damp",
+       "cc": 87,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mod",
+       "cc": 88,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 89,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 90,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "Shimmer",
+     "params": [
+      {
+       "id": "decay",
+       "cc": 85,
+       "kind": "range",
+       "min": 0,
+       "max": 12,
+       "options": null
+      },
+      {
+       "id": "pre_delay",
+       "cc": 86,
+       "kind": "range",
+       "min": 5,
+       "max": 120,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 87,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "pitch",
+       "cc": 88,
+       "kind": "range",
+       "min": -24,
+       "max": 24,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 89,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 90,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 5,
+     "name": "Cloud",
+     "params": [
+      {
+       "id": "decay",
+       "cc": 85,
+       "kind": "range",
+       "min": 1,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "tone",
+       "cc": 86,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mod_depth",
+       "cc": 87,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mod_rate",
+       "cc": 88,
+       "kind": "range",
+       "min": 0.02,
+       "max": 0.25,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 89,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 90,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "Spring",
+     "params": [
+      {
+       "id": "decay",
+       "cc": 85,
+       "kind": "range",
+       "min": 0,
+       "max": 12,
+       "options": null
+      },
+      {
+       "id": "pre_delay",
+       "cc": 86,
+       "kind": "range",
+       "min": 5,
+       "max": 80,
+       "options": null
+      },
+      {
+       "id": "crossover",
+       "cc": 87,
+       "kind": "range",
+       "min": 800,
+       "max": 8000,
+       "options": null
+      },
+      {
+       "id": "mod",
+       "cc": 88,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "mix",
+       "cc": 89,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      },
+      {
+       "id": "level",
+       "cc": 90,
+       "kind": "range",
+       "min": 0,
+       "max": 100,
+       "options": null
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "eq",
+   "name": "EQ",
+   "onOffCC": 28,
+   "typeCC": 48,
+   "types": [
+    {
+     "id": 0,
+     "name": "3-band EQ",
+     "params": [
+      {
+       "id": "low",
+       "cc": 91,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "mid",
+       "cc": 92,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "high",
+       "cc": 93,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 1,
+     "name": "6-band EQ",
+     "params": [
+      {
+       "id": "b120",
+       "cc": 91,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b250",
+       "cc": 92,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b500",
+       "cc": 93,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b1k",
+       "cc": 94,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b2k",
+       "cc": 95,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b4k",
+       "cc": 96,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      }
+     ]
+    },
+    {
+     "id": 2,
+     "name": "8-band EQ",
+     "params": [
+      {
+       "id": "b60",
+       "cc": 91,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b120",
+       "cc": 92,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b250",
+       "cc": 93,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b500",
+       "cc": 94,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b1k",
+       "cc": 95,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b2k",
+       "cc": 96,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b4k",
+       "cc": 97,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      },
+      {
+       "id": "b8k",
+       "cc": 33,
+       "kind": "range",
+       "min": -15,
+       "max": 15,
+       "options": null
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

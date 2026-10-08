@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nanocore-controller"
+version = "0.1.0"
+description = "Safe command-line control for the LIVTRA NANOCORE"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "David"}]
+dependencies = ["bleak>=0.22"]
+
+[project.optional-dependencies]
+serve = ["aiohttp>=3.9"]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.11"]
+
+[project.scripts]
+nanocore = "nanocore_controller.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+nanocore_controller = ["py.typed", "web_placeholder.html", "web_dist/*", "web_dist/assets/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+extend-exclude = [".claude"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src"]
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["bleak", "bleak.*"]
+ignore_missing_imports = true
