@@ -35,15 +35,39 @@ It starts with the login session. It does not run at the login screen.
 
 The device names are matched by pattern (`alsa_input.*Nanocore.*analog-stereo` and `Q_Acoustics.*analog-stereo`). If your speakers are not the Q Acoustics M20, change the `sink=` pattern in the script. List candidates with `pactl list short sinks`.
 
+## The web editor starts with the pedal
+
+The same service also runs the editor's server while the Nanocore is plugged in over USB, and opens it in your browser (`xdg-open`) unless a page already has it open. It asks the server (`GET /api/health` reports `clients`, the pages connected) and gives an open page 8 seconds to reconnect after the server starts, so a tab you left open is reused. Tabs are never opened more often than every 30 seconds. Unplugging the pedal stops the server.
+
+The server and the command line cannot share the USB port. To run a `nanocore` command or a script:
+
+```bash
+touch ~/.cache/nanocore-loopback.pause   # the server stops; the audio keeps running
+rm ~/.cache/nanocore-loopback.pause      # the server comes back
+```
+
+Settings go in `~/.config/nanocore-loopback.env` (a shell file read by the script), for example:
+
+```bash
+NANOCORE_BIN=/path/to/nanocore-controller/.venv/bin/nanocore   # default: nanocore, from PATH
+export NANOCORE_EAD_DECRYPTOR="..."   # optional, see docs/ead-decryptor.md
+SERVE_ARGS=(--read-only)              # extra arguments for `nanocore serve`
+OPEN_BROWSER=no                       # start the server but never open a tab
+```
+
+The server runs with `--no-token`: it listens on 127.0.0.1 only, but any program on the computer can change the presets. The automatic opening depends on it: with a token the page address changes on every start, and the script does not read it.
+
 ## Tuning
 
-Edit the variables at the top of the script, then `systemctl --user restart nanocore-loopback`:
+Edit the variables at the top of the script (or set them in the settings file), then `systemctl --user restart nanocore-loopback`:
 
 | Variable | Default | Meaning |
 |---|---|---|
 | `QUANTUM` | `64` | Buffer size in samples at 48 kHz |
 | `SINK_VOL` | `70%` | Speaker output volume, set every time the loopback starts |
 | `STREAM_VOL` | `160%` | Software gain on the loopback stream |
+| `SPEAKERS` | `Q_Acoustics.*-stereo$` | Regular expression for the output to play through |
+| `SERVE_PORT` | `8765` | Port of the editor's server |
 
 Buffer size changes latency and stability, not sound quality. Smaller buffers cost less delay but leave less margin for the CPU:
 

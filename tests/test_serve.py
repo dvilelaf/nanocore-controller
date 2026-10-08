@@ -240,7 +240,20 @@ class ReadOnlyTest(ServerTestCase):
 
 class EndpointTest(ServerTestCase):
     async def test_health(self):
-        self.assertEqual(await (await self.client.get("/api/health")).json(), {"ok": True, "token_required": True})
+        self.assertEqual(await (await self.client.get("/api/health")).json(), {"ok": True, "token_required": True, "clients": 0})
+
+    async def test_health_counts_the_pages_connected(self):
+        ws = await self.client.ws_connect("/ws")
+        self.assertEqual((await (await self.client.get("/api/health")).json())["clients"], 0)  # not authenticated yet
+        await ws.send_json({"type": "auth", "token": TOKEN})
+        await ws.receive_json(timeout=2)
+        self.assertEqual((await (await self.client.get("/api/health")).json())["clients"], 1)
+        await ws.close()
+        for _ in range(50):
+            if (await (await self.client.get("/api/health")).json())["clients"] == 0:
+                break
+            await asyncio.sleep(0.02)
+        self.assertEqual((await (await self.client.get("/api/health")).json())["clients"], 0)
 
     async def test_state_document(self):
         state = await (await self.get("/api/state")).json()
@@ -937,13 +950,13 @@ class NoTokenServerTest(ServerTestCase):
 
     async def test_health_tells_the_page_that_no_token_is_needed(self):
         body = await (await self.client.get("/api/health")).json()
-        self.assertEqual(body, {"ok": True, "token_required": False})
+        self.assertEqual(body, {"ok": True, "token_required": False, "clients": 0})
 
 
 class TokenRequiredByDefaultTest(ServerTestCase):
     async def test_health_says_a_token_is_required(self):
         body = await (await self.client.get("/api/health")).json()
-        self.assertEqual(body, {"ok": True, "token_required": True})
+        self.assertEqual(body, {"ok": True, "token_required": True, "clients": 0})
 
 
 class NoTokenOptionTest(unittest.TestCase):

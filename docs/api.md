@@ -73,7 +73,7 @@ When an edit fails after some operations were sent, the error object also carrie
 
 | Method and path | Purpose |
 |---|---|
-| `GET /api/health` | `{"ok": true, "token_required": true}`. No token. The page uses `token_required: false` to connect without one. |
+| `GET /api/health` | `{"ok": true, "token_required": true, "clients": 0}`. No token. The page uses `token_required: false` to connect without one; `clients` is the number of pages connected and authenticated. |
 | `GET /api/state` | The state document above. |
 | `GET /api/presets` | `{"presets": [{"slot": 0, "display_number": 1, "name": "..."}]}`, read from the pedal's catalog. |
 | `GET /api/assets` | `{"amp": {"slot": 12, "name": "MesR2"}, "ir": {"slot": 2, "name": "Eng412A"}}`. Slow path, cached by the server. |

@@ -704,6 +704,10 @@ class NanocoreServer:
             with contextlib.suppress(Exception):
                 await client.close()
 
+    @property
+    def client_count(self) -> int:
+        return len(self._clients)
+
     def add_client(self, client: web.WebSocketResponse) -> None:
         self._clients.add(client)
         self._publish({"type": "state", "rev": self.rev, "state": self.state_document()}, only=client)
@@ -1423,7 +1427,9 @@ def _model_target(request: web.Request) -> tuple[str, int]:
 
 def build_routes(server: NanocoreServer) -> list[Any]:
     async def health(request: web.Request) -> web.Response:
-        return _json({"ok": True, "token_required": server.options.require_token})
+        # "clients" is the number of pages connected and authenticated: the launcher that opens the
+        # editor when the pedal is plugged in uses it to avoid opening a second tab.
+        return _json({"ok": True, "token_required": server.options.require_token, "clients": server.client_count})
 
     async def state(request: web.Request) -> web.Response:
         return _json(await server.state())

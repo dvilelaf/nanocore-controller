@@ -1,29 +1,111 @@
 #!/usr/bin/env bash
-# Route the Livtra Nanocore USB input to the Q Acoustics M20 speakers while both are present.
+# While a Livtra Nanocore is plugged in over USB:
+#   * route its audio input to the speakers (low-latency loopback), once both are present;
+#   * run the web editor's server (nanocore serve);
+#   * open the editor in the browser, unless a page already has it open.
+# Everything is stopped when the pedal is unplugged. Settings: ~/.config/nanocore-loopback.env
+#
+# To use the pedal from a script or the command line (they cannot share the USB port with the
+# server), run `touch ~/.cache/nanocore-loopback.pause`: the server stops, the audio stays.
+# Remove the file to bring the server back.
+
+CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/nanocore-loopback.env"
+PAUSE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.pause"
+OPENED_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.opened"
+
 QUANTUM=64
 SINK_VOL=70%
 STREAM_VOL=160%
+SPEAKERS='Q_Acoustics.*-stereo$'   # regular expression for the output to play through
+NANOCORE_BIN=nanocore
+SERVE_PORT=8765
+SERVE_ARGS=()                      # extra arguments for `nanocore serve`
+OPEN_BROWSER=yes
+CLIENT_WAIT=8                      # seconds a page has to connect before a new tab is opened
+MIN_OPEN_INTERVAL=30               # never open tabs more often than this (seconds)
+RESTART_AFTER=10                   # wait this long after starting the server before starting it again
+# shellcheck source=/dev/null
+[ -f "$CONFIG" ] && . "$CONFIG"
 
-pid=""
-stop() { [ -n "$pid" ] && kill "$pid" 2>/dev/null; pid=""; }
-trap 'stop; exit 0' TERM INT
+loop_pid=""
+server_pid=""
+server_started=0
+
+log() { echo "nanocore-loopback: $*" >&2; }
+
+stop_loopback() { [ -n "$loop_pid" ] && kill "$loop_pid" 2>/dev/null; loop_pid=""; }
+stop_server() { [ -n "$server_pid" ] && kill "$server_pid" 2>/dev/null; server_pid=""; }
+trap 'stop_loopback; stop_server; exit 0' TERM INT
+
+pedal_present() { grep -q 'Nanocore' /proc/asound/cards 2>/dev/null; }
+alive() { [ -n "$1" ] && kill -0 "$1" 2>/dev/null; }
+
+health() { curl -fsS -m 2 "http://127.0.0.1:$SERVE_PORT/api/health" 2>/dev/null; }
+clients() { health | sed -n 's/.*"clients": *\([0-9][0-9]*\).*/\1/p'; }
+
+start_server() {
+  "$NANOCORE_BIN" --transport usb serve --port "$SERVE_PORT" --no-token "${SERVE_ARGS[@]}" &
+  server_pid=$!
+  log "server started (pid $server_pid)"
+}
+
+# After a (re)start: give an already open page time to reconnect, and open a tab only if none did.
+open_editor_if_needed() {
+  [ "$OPEN_BROWSER" = yes ] || return 0
+  local waited=0 n
+  while [ "$waited" -lt 15 ]; do
+    [ -n "$(health)" ] && break
+    sleep 1; waited=$((waited + 1))
+  done
+  [ -n "$(health)" ] || { log "the server did not answer; no tab opened"; return 0; }
+  waited=0
+  while [ "$waited" -lt "$CLIENT_WAIT" ]; do
+    n=$(clients)
+    if [ "${n:-0}" -gt 0 ]; then log "the editor is already open"; return 0; fi
+    sleep 1; waited=$((waited + 1))
+  done
+  local now last; now=$(date +%s)
+  last=$(stat -c %Y "$OPENED_FILE" 2>/dev/null || echo 0)
+  if [ $((now - last)) -lt "$MIN_OPEN_INTERVAL" ]; then return 0; fi
+  mkdir -p "$(dirname "$OPENED_FILE")" && touch "$OPENED_FILE"
+  log "opening the editor"
+  xdg-open "http://127.0.0.1:$SERVE_PORT/" >/dev/null 2>&1 &
+}
 
 while true; do
-  src=$(pactl list short sources | awk '{print $2}' | grep -m1 'alsa_input.*Nanocore.*analog-stereo$')
-  sink=$(pactl list short sinks | awk '{print $2}' | grep -m1 'Q_Acoustics.*analog-stereo$')
-  if [ -n "$src" ] && [ -n "$sink" ]; then
-    if [ -z "$pid" ] || ! kill -0 "$pid" 2>/dev/null; then
-      PIPEWIRE_LATENCY="$QUANTUM/48000" pw-loopback -C "$src" -P "$sink" \
-        --capture-props='node.name=nanocore_in node.passive=false' \
-        --playback-props='node.name=nanocore_out' &
-      pid=$!
-      sleep 2
-      pactl set-sink-volume "$sink" "$SINK_VOL"
-      id=$(pactl list sink-inputs | grep -B30 'node.name = "nanocore_out"' | grep -oE '#[0-9]+' | tail -1 | tr -d '#')
-      [ -n "$id" ] && pactl set-sink-input-volume "$id" "$STREAM_VOL"
+  if pedal_present; then
+    # audio
+    src=$(pactl list short sources | awk '{print $2}' | grep -m1 'alsa_input.*Nanocore.*analog-stereo$')
+    sink=$(pactl list short sinks | awk '{print $2}' | grep -m1 "$SPEAKERS")
+    if [ -n "$src" ] && [ -n "$sink" ]; then
+      if ! alive "$loop_pid"; then
+        PIPEWIRE_LATENCY="$QUANTUM/48000" pw-loopback -C "$src" -P "$sink" \
+          --capture-props='node.name=nanocore_in node.passive=false' \
+          --playback-props='node.name=nanocore_out' &
+        loop_pid=$!
+        sleep 2
+        pactl set-sink-volume "$sink" "$SINK_VOL"
+        id=$(pactl list sink-inputs | grep -B30 'node.name = "nanocore_out"' | grep -oE '#[0-9]+' | tail -1 | tr -d '#')
+        [ -n "$id" ] && pactl set-sink-input-volume "$id" "$STREAM_VOL"
+      fi
+    else
+      stop_loopback
+    fi
+    # server and editor
+    if [ -e "$PAUSE_FILE" ]; then
+      alive "$server_pid" && log "paused: server stopped"
+      stop_server
+    elif ! alive "$server_pid"; then
+      server_pid=""
+      if [ $(($(date +%s) - server_started)) -ge "$RESTART_AFTER" ]; then
+        server_started=$(date +%s)
+        start_server
+        open_editor_if_needed &
+      fi
     fi
   else
-    stop
+    stop_loopback
+    stop_server
   fi
   sleep 2
 done
