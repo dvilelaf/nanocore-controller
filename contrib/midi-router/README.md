@@ -34,3 +34,15 @@ along the whole list, so the four number buttons of the first page send 0 to 3 a
 The pedal's own numbers do the same: CC 80 is the tuner, CC 81 and CC 82 previous and next preset.
 
 The pedal's reaction to a Program Change, CC 81 or CC 82 takes about 100 ms.
+
+## The GT-10's LEDs
+
+The GT-10 lights and darkens the LED of CTL1 on its own and starts each patch with whatever LED state
+the patch stores; a router cannot read it. A `toggle` therefore follows the effect, not the LED: with
+`reset_toggles_on_program_change` the first press after a patch change always switches on, and the LED
+can be the opposite in patches that store CTL1 as lit. Where that matters use `momentary` (the effect
+is on while the switch is held) or give every patch the same LED state.
+
+The example maps the number buttons, and so the bank buttons (pages of four), straight to presets 1
+to 64; CTL1 toggles the tuner; CTL2 and EXP SW are previous and next preset; the expression pedal
+drives the amp gain (CC 60).

@@ -145,6 +145,20 @@ class ControlChangeTests(unittest.TestCase):
         cfg = {**GT10, "cc": {"80": {"action": "toggle", "send": 20, "initial": True}}}
         self.assertEqual(run(cfg, [0xB0, 80, 127]), [bytes([0xB0, 20, 0])])
 
+    def test_toggle_goes_back_to_its_initial_state_on_a_program_change(self):
+        cfg = {**GT10, "reset_toggles_on_program_change": True}
+        out = run(cfg, [0xB0, 80, 127], [0xB0, 80, 0], [0xC0, 1], [0xB0, 80, 127])
+        self.assertEqual(out, [bytes([0xB0, 20, 127]), bytes([0xC0, 1]), bytes([0xB0, 20, 127])])
+
+    def test_toggle_keeps_its_state_across_program_changes_by_default(self):
+        out = run(GT10, [0xB0, 80, 127], [0xC0, 1], [0xB0, 80, 127])
+        self.assertEqual(out, [bytes([0xB0, 20, 127]), bytes([0xC0, 1]), bytes([0xB0, 20, 0])])
+
+    def test_the_reset_also_happens_when_the_program_is_not_forwarded(self):
+        cfg = {**GT10, "reset_toggles_on_program_change": True}
+        out = run(cfg, [0xB0, 80, 127], [0xC0, 99], [0xB0, 80, 127])
+        self.assertEqual(out, [bytes([0xB0, 20, 127]), bytes([0xB0, 20, 127])])
+
     def test_map_sends_continuous_values(self):
         self.assertEqual(run(GT10, [0xB0, 7, 0], [0xB0, 7, 64], [0xB0, 7, 127]),
                          [bytes([0xB0, 60, 0]), bytes([0xB0, 60, 64]), bytes([0xB0, 60, 127])])

@@ -18,7 +18,10 @@ What it translates (see gt10.example.json):
 * Everything else (notes, pitch bend, SysEx, clock, unlisted controllers) is dropped.
 
 The toggle state lives here: the router cannot read the pedal, so after a preset change a toggle can
-disagree with the effect it drives. Use "momentary" or "pass" where that matters.
+disagree with the effect it drives. Use "momentary" or "pass" where that matters. A toggle starts in
+its "initial" state (a controller whose LED starts lit wants "initial": true, so that the first press
+turns the effect off); "reset_toggles_on_program_change" sends every toggle back to its initial state
+with each Program Change, for controllers that do the same with their LEDs.
 """
 
 from __future__ import annotations
@@ -84,6 +87,8 @@ class Translator:
             if action == "toggle":
                 self.toggles[number] = bool(rule.get("initial", False))
             self.rules[number] = parsed
+        self.reset_toggles = bool(config.get("reset_toggles_on_program_change", False))
+        self.initial_toggles = dict(self.toggles)
         self.bank = 0  # the last Bank Select MSB seen
         self.last_sent: dict[int, int] = {}
         self._status: int | None = None
@@ -124,6 +129,9 @@ class Translator:
         kind, channel = status & 0xF0, status & 0x0F
         if self.input_channel is not None and channel + 1 != self.input_channel:
             return []
+        if kind == 0xC0 and self.reset_toggles:
+            # a controller that restarts its switches' LEDs with every patch needs its toggles to restart too
+            self.toggles = dict(self.initial_toggles)
         if kind == 0xC0 and self.program_change is not None:
             banks, maximum = self.program_change
             if self.bank not in banks:
