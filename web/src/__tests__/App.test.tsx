@@ -139,6 +139,23 @@ describe('App served by nanocore serve', () => {
     );
   });
 
+  it('steps through the presets with the arrow keys, wrapping around', async () => {
+    const f = await renderBridged();
+    const select = await screen.findByRole('combobox', { name: 'Preset' });
+    await waitFor(() => expect(within(select).getAllByRole('option')).toHaveLength(2));
+    const recalled = () =>
+      f.calls.filter((c) => c.path === '/api/preset').map((c) => (c.body as { display_number: number }).display_number);
+    const first = (select as HTMLSelectElement).value;
+
+    fireEvent.keyDown(document.body, { key: 'ArrowRight' });
+    await waitFor(() => expect(recalled()).toHaveLength(1));
+    expect(String(recalled()[0])).not.toBe(first);
+
+    // a field that uses the arrows itself is left alone
+    fireEvent.keyDown(select, { key: 'ArrowDown' });
+    expect(recalled()).toHaveLength(1);
+  });
+
   it('has only the dropdown for presets, with no step buttons beside it', async () => {
     await renderBridged();
     await screen.findByRole('combobox', { name: 'Preset' });

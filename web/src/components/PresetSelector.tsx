@@ -144,6 +144,29 @@ export function PresetSelector() {
     bridgeTransport.setPresetVolume(value);
   };
 
+  // Arrow keys step through the presets, wrapping around: left/up go back, right/down go forward.
+  const step = useRef<(delta: number) => void>(() => {});
+  step.current = (delta: number) => {
+    if (locked || !active || options.length < 2) return;
+    const index = options.findIndex((p) => p.display_number === active.display_number);
+    if (index < 0) return;
+    go(options[(index + delta + options.length) % options.length].display_number);
+  };
+  useEffect(() => {
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+      const delta = e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : 0;
+      if (delta === 0) return;
+      const target = e.target as HTMLElement | null;
+      // Fields and sliders use the arrows themselves; dialogs and menus own the keyboard while open.
+      if (target?.closest('input, textarea, select, [contenteditable], [role="dialog"], [role="menu"], [role="listbox"]')) return;
+      e.preventDefault();
+      step.current(delta);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
   const activeSlot = active?.slot ?? null;
   useEffect(() => {
     setRenaming(false); // the pedal moved to another preset: the name being typed belongs to the old one
