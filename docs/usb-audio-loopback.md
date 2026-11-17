@@ -37,14 +37,24 @@ The device names are matched by pattern (`alsa_input.*Nanocore.*analog-stereo` a
 
 ## The web editor starts with the pedal
 
-The same service also runs the editor's server while the Nanocore is plugged in over USB, and opens it in your browser (`xdg-open`) unless a page already has it open. It asks the server (`GET /api/health` reports `clients`, the pages connected) and gives an open page 8 seconds to reconnect after the server starts, so a tab you left open is reused. Tabs are never opened more often than every 30 seconds. Unplugging the pedal stops the server.
+The same service also runs the editor's server while the Nanocore is plugged in over USB, and opens it in your browser (`xdg-open`) unless a page already has it open. Without the USB cable it does the same over Bluetooth (see below), minus the audio. It asks the server (`GET /api/health` reports `clients`, the pages connected) and gives an open page 8 seconds to reconnect after the server starts, so a tab you left open is reused. Tabs are never opened more often than every 30 seconds. Unplugging the pedal stops the server.
 
 **Two switches in the editor.** The Connection menu of the web editor has a switch for each half:
 
-- **Pedal:** off makes the server let go of the pedal's USB port (the server keeps running and the editor stays open), so another program can use the pedal; on takes it back and reloads the state. The Connection button turns red while it is off. Nothing is shown or asked.
-- **Speakers:** off stops the guitar through the PC speakers, on brings it back (the launcher watches `~/.cache/nanocore-loopback.speakers-off`; the switch creates or removes it, and `touch`/`rm` do the same by hand). The two switches are independent: you can release the pedal and keep the sound, or mute the speakers (to use headphones) and keep editing. The Speakers switch appears only when the server was started by this launcher.
+- **Pedal:** off makes the server let go of the pedal (its USB port, or the Bluetooth link), so another program can use the pedal; on takes it back and reloads the state. The server keeps running and the editor stays open. The Connection button turns red while it is off. Nothing is shown or asked.
+- **Speakers:** off stops the guitar through the PC speakers, on brings it back (the launcher watches `~/.cache/nanocore-loopback.speakers-off`; the switch creates or removes it, and `touch`/`rm` do the same by hand). The two switches are independent: you can release the pedal and keep the sound, or mute the speakers (to use headphones) and keep editing. The Speakers switch appears only when the server was started by this launcher over USB: Bluetooth carries no audio, so with no cable nothing is routed and the speakers' volume is left alone.
 
-The server and the command line cannot share the USB port. Releasing the pedal from the editor is the simplest way; to run a `nanocore` command or a script without the page:
+## The editor over Bluetooth, without USB
+
+Bluetooth on the Nanocore is control only (BLE-MIDI): the editor, its presets and its live controls work, but the guitar cannot reach the PC over Bluetooth. The launcher uses it as a fallback when there is no USB audio card:
+
+- With no Nanocore sound card it probes the pedal every `BT_PROBE_EVERY` seconds with `nanocore status`. When the pedal answers, it starts `nanocore serve --transport bluetooth`, waits for the link, and only then opens the tab, so no page is opened for a pedal it cannot reach.
+- The address comes from the profile saved by `nanocore configure` (`~/.config/nanocore-controller/config.json`), or from `BT_ADDRESS`. The adapter is discovered: every `hci*` the machine has is probed and the server starts on the one that answers (`--adapter`), because a pedal can be visible on one adapter and not on another. Set `BT_ADAPTER` to pin one.
+- Nothing is routed to the speakers and no `pactl` volume is set in this mode. `--audio-switch-file` is not passed, so the editor does not show the Speakers switch.
+- If the link does not come up within `BT_CONNECT_TIMEOUT` seconds, the server is stopped and probing resumes, instead of retrying a Bluetooth connection forever. Releasing the pedal from the editor is respected: the server stays up while the switch is off.
+- Plugging the USB cable back in switches the running server from Bluetooth to USB on its own.
+
+The server and the command line cannot share the link to the pedal, be it the USB port or the Bluetooth connection. Releasing the pedal from the editor is the simplest way; to run a `nanocore` command or a script without the page:
 
 ```bash
 touch ~/.cache/nanocore-loopback.pause   # the server stops; the audio keeps running
@@ -58,6 +68,9 @@ NANOCORE_BIN=/path/to/nanocore-controller/.venv/bin/nanocore   # default: nanoco
 export NANOCORE_EAD_DECRYPTOR="..."   # optional, see docs/ead-decryptor.md
 SERVE_ARGS=(--read-only)              # extra arguments for `nanocore serve`
 OPEN_BROWSER=no                       # start the server but never open a tab
+BLUETOOTH=yes                         # the editor also starts over Bluetooth when there is no USB
+BT_ADDRESS=E2:2D:FD:84:CB:C2          # default: the pedal saved by `nanocore configure`
+BT_ADAPTER=                           # empty: probe every adapter and use the one that answers
 ```
 
 The server runs with `--no-token`: it listens on 127.0.0.1 only, but any program on the computer can change the presets. The automatic opening depends on it: with a token the page address changes on every start, and the script does not read it.
@@ -73,6 +86,11 @@ Edit the variables at the top of the script (or set them in the settings file), 
 | `STREAM_VOL` | `160%` | Software gain on the loopback stream |
 | `SPEAKERS` | `Q_Acoustics.*-stereo$` | Regular expression for the output to play through |
 | `SERVE_PORT` | `8765` | Port of the editor's server |
+| `BLUETOOTH` | `yes` | Start the editor over Bluetooth when there is no USB audio card |
+| `BT_ADDRESS` | empty | Pedal address; empty uses the saved `nanocore configure` profile |
+| `BT_ADAPTER` | empty | Adapter to probe (`hci0`, `hci1`…); empty probes every adapter and uses the one that answers |
+| `BT_PROBE_EVERY` | `30` | Seconds between probes while the pedal does not answer over Bluetooth |
+| `BT_CONNECT_TIMEOUT` | `45` | Seconds without a Bluetooth link before giving up and probing again |
 
 Buffer size changes latency and stability, not sound quality. Smaller buffers cost less delay but leave less margin for the CPU:
 

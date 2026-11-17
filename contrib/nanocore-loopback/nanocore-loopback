@@ -1,22 +1,28 @@
 #!/usr/bin/env bash
-# While a Livtra Nanocore is plugged in over USB:
-#   * route its audio input to the speakers (low-latency loopback), once both are present;
-#   * run the web editor's server (nanocore serve);
+# While a Livtra Nanocore is present:
+#   * over USB, route its audio input to the speakers (low-latency loopback), once both are present;
+#   * run the web editor's server (nanocore serve), over USB or Bluetooth;
 #   * open the editor in the browser, unless a page already has it open.
-# Everything is stopped when the pedal is unplugged. Settings: ~/.config/nanocore-loopback.env
+# Everything is stopped when the pedal goes away. Settings: ~/.config/nanocore-loopback.env
 #
-# The editor has two switches for this (Connection menu): "Pedal" makes the server let go of the USB
-# port without stopping, and "Speakers" turns the audio to the speakers off (it creates
-# ~/.cache/nanocore-loopback.speakers-off, which this script watches).
+# USB carries the audio; Bluetooth only carries control (BLE-MIDI). With the pedal on Bluetooth and
+# no USB cable the editor still runs, but nothing is routed to the speakers and their volume is
+# left alone. A Bluetooth connection is only made when the pedal answers: the script probes with
+# `nanocore status` and gives up after BT_CONNECT_TIMEOUT seconds without a link.
 #
-# To use the pedal from a script or the command line (they cannot share the USB port with the
-# server), run `touch ~/.cache/nanocore-loopback.pause`: the server stops, the audio stays.
+# The editor has two switches for this (Connection menu): "Pedal" makes the server let go of the
+# pedal (USB port or Bluetooth link) without stopping, and "Speakers" turns the audio to the
+# speakers off (it creates ~/.cache/nanocore-loopback.speakers-off, which this script watches).
+#
+# To use the pedal from a script or the command line (they cannot share the link with the server),
+# run `touch ~/.cache/nanocore-loopback.pause`: the server stops, the audio stays.
 # Remove the file to bring the server back.
 
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/nanocore-loopback.env"
 PAUSE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.pause"
 OPENED_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.opened"
 SPEAKERS_OFF_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.speakers-off"
+BT_PROBE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/nanocore-loopback.bt-probe"
 
 QUANTUM=64
 SINK_VOL=70%
@@ -29,41 +35,113 @@ OPEN_BROWSER=yes
 CLIENT_WAIT=8                      # seconds a page has to connect before a new tab is opened
 MIN_OPEN_INTERVAL=30               # never open tabs more often than this (seconds)
 RESTART_AFTER=10                   # wait this long after starting the server before starting it again
+BLUETOOTH=yes                      # fall back to Bluetooth control when there is no USB audio
+BT_ADDRESS=                        # empty: the pedal saved by `nanocore configure`
+BT_ADAPTER=                        # empty: probe every hci* adapter and use the one that answers
+BT_PROBE_EVERY=30                  # seconds between probes while the pedal is not answering
+BT_CONNECT_TIMEOUT=45              # seconds without a Bluetooth link before giving up and probing again
+BT_SKIP=300                        # seconds an adapter that could not hold the link is left alone
 # shellcheck source=/dev/null
 [ -f "$CONFIG" ] && . "$CONFIG"
 
+BT_ADDR_ARGS=()
+[ -n "$BT_ADDRESS" ] && BT_ADDR_ARGS+=(--address "$BT_ADDRESS")
+
 loop_pid=""
 server_pid=""
+server_mode=""
+bt_adapter=""
 server_started=0
+bt_lost_at=0
+bt_skip=""
+bt_skip_until=0
+last_probe=0
+bt_ready_at=0
 
 log() { echo "nanocore-loopback: $*" >&2; }
 
 stop_loopback() { [ -n "$loop_pid" ] && kill "$loop_pid" 2>/dev/null; loop_pid=""; }
-stop_server() { [ -n "$server_pid" ] && kill "$server_pid" 2>/dev/null; server_pid=""; }
+stop_server() { [ -n "$server_pid" ] && kill "$server_pid" 2>/dev/null; server_pid=""; server_mode=""; }
 trap 'stop_loopback; stop_server; exit 0' TERM INT
 
-pedal_present() { grep -q 'Nanocore' /proc/asound/cards 2>/dev/null; }
+usb_present() { grep -q 'Nanocore' /proc/asound/cards 2>/dev/null; }
 alive() { [ -n "$1" ] && kill -0 "$1" 2>/dev/null; }
 
 health() { curl -fsS -m 2 "http://127.0.0.1:$SERVE_PORT/api/health" 2>/dev/null; }
 clients() { health | sed -n 's/.*"clients": *\([0-9][0-9]*\).*/\1/p'; }
+linked() { health | grep -q '"connected": *true'; }
+released() { health | grep -q '"released": *true'; }
 
+# Every adapter the machine has (hci0, hci1...), unless BT_ADAPTER pins one. The pedal is not
+# necessarily reachable from the adapter saved by `nanocore configure`, so the launcher finds the
+# adapter that answers and starts the server on that one.
+bt_adapters() {
+  if [ -n "$BT_ADAPTER" ]; then printf '%s\n' "$BT_ADAPTER"; return; fi
+  local all=() out=() d now
+  now=$(date +%s)
+  for d in /sys/class/bluetooth/hci*; do
+    d=${d##*/}
+    # the class also holds connection handles (hci0:70), not only adapters
+    [ "$d" = "${d%%:*}" ] && all+=("$d")
+  done
+  for d in "${all[@]}"; do
+    { [ "$d" = "$bt_skip" ] && [ "$now" -lt "$bt_skip_until" ]; } || out+=("$d")
+  done
+  [ "${#out[@]}" -gt 0 ] || out=("${all[@]}")
+  [ "${#out[@]}" -gt 0 ] && printf '%s\n' "${out[@]}"
+}
+
+# Asking the pedal costs a Bluetooth connection, so it is only done when no server holds the link.
+# The CLI needs up to 15 s to conclude that a missing pedal is missing, so the probe runs in the
+# background: the loop keeps watching the USB card while it waits. All adapters are asked at once;
+# the first answer names its adapter in the file.
+start_probe() {
+  rm -f "$BT_PROBE_FILE"
+  (
+    local adapter
+    for adapter in $(bt_adapters); do
+      ( timeout 20 "$NANOCORE_BIN" "${BT_ADDR_ARGS[@]}" --adapter "$adapter" status >/dev/null 2>&1 \
+          && echo "$adapter" > "$BT_PROBE_FILE" ) &
+    done
+    wait
+    [ -s "$BT_PROBE_FILE" ] || echo no > "$BT_PROBE_FILE"
+  ) &
+  last_probe=$(date +%s)
+}
+
+rm -f "$BT_PROBE_FILE"   # a leftover answer from a previous run would be a lie
 start_server() {
-  "$NANOCORE_BIN" --transport usb serve --port "$SERVE_PORT" --no-token \
-    --audio-switch-file "$SPEAKERS_OFF_FILE" "${SERVE_ARGS[@]}" &
+  local mode=$1
+  if [ "$mode" = bluetooth ]; then
+    local adapter=()
+    [ -n "$bt_adapter" ] && adapter+=(--adapter "$bt_adapter")
+    "$NANOCORE_BIN" --transport bluetooth "${BT_ADDR_ARGS[@]}" "${adapter[@]}" \
+      serve --port "$SERVE_PORT" --no-token "${SERVE_ARGS[@]}" &
+  else
+    "$NANOCORE_BIN" --transport usb serve --port "$SERVE_PORT" --no-token \
+      --audio-switch-file "$SPEAKERS_OFF_FILE" "${SERVE_ARGS[@]}" &
+  fi
   server_pid=$!
-  log "server started (pid $server_pid)"
+  server_mode=$mode
+  [ "$mode" = bluetooth ] && bt_lost_at=$(date +%s)
+  log "server started (pid $server_pid, $mode)"
 }
 
 # After a (re)start: give an already open page time to reconnect, and open a tab only if none did.
+# Over Bluetooth the tab also waits for the link: the server answers before the pedal does.
 open_editor_if_needed() {
+  local mode=$1
   [ "$OPEN_BROWSER" = yes ] || return 0
-  local waited=0 n
-  while [ "$waited" -lt 15 ]; do
-    [ -n "$(health)" ] && break
+  local waited=0 limit=15 n
+  [ "$mode" = bluetooth ] && limit=$BT_CONNECT_TIMEOUT
+  while [ "$waited" -lt "$limit" ]; do
+    if [ -n "$(health)" ] && { [ "$mode" != bluetooth ] || linked; }; then break; fi
     sleep 1; waited=$((waited + 1))
   done
   [ -n "$(health)" ] || { log "the server did not answer; no tab opened"; return 0; }
+  if [ "$mode" = bluetooth ] && ! linked; then
+    log "no Bluetooth link to the pedal; no tab opened"; return 0
+  fi
   waited=0
   while [ "$waited" -lt "$CLIENT_WAIT" ]; do
     n=$(clients)
@@ -79,7 +157,32 @@ open_editor_if_needed() {
 }
 
 while true; do
-  if pedal_present; then
+  # mode: usb (audio and control), bluetooth (control only) or empty (pedal away)
+  mode=""
+  now=$(date +%s)
+  if usb_present; then
+    mode=usb
+  elif [ "$BLUETOOTH" = yes ] && [ ! -e "$PAUSE_FILE" ]; then
+    if alive "$server_pid" && [ "$server_mode" = bluetooth ]; then
+      mode=bluetooth   # the server is the one holding the link; the watchdog below gives up if it never comes
+    elif [ -s "$BT_PROBE_FILE" ]; then
+      # the probe finished while the loop kept running; it names the adapter that answered, or "no"
+      answer=$(cat "$BT_PROBE_FILE" 2>/dev/null)
+      if [ -n "$answer" ] && [ "$answer" != no ]; then mode=bluetooth; bt_adapter=$answer; fi
+      rm -f "$BT_PROBE_FILE"
+    elif [ "$now" -ge "$bt_ready_at" ] && [ $((now - last_probe)) -ge "$BT_PROBE_EVERY" ]; then
+      start_probe
+    fi
+  fi
+
+  # the pedal changed transport (or appeared on the other one): restart the server on it
+  if alive "$server_pid" && [ -n "$mode" ] && [ "$server_mode" != "$mode" ]; then
+    log "switching the server from $server_mode to $mode"
+    stop_server
+  fi
+
+  if [ "$mode" = usb ]; then
+    rm -f "$BT_PROBE_FILE"   # over USB a Bluetooth answer from before says nothing
     # audio
     src=$(pactl list short sources | awk '{print $2}' | grep -m1 'alsa_input.*Nanocore.*analog-stereo$')
     sink=$(pactl list short sinks | awk '{print $2}' | grep -m1 "$SPEAKERS")
@@ -99,21 +202,40 @@ while true; do
     else
       stop_loopback
     fi
-    # server and editor
-    if [ -e "$PAUSE_FILE" ]; then
-      alive "$server_pid" && log "paused: server stopped"
-      stop_server
-    elif ! alive "$server_pid"; then
-      server_pid=""
-      if [ $(($(date +%s) - server_started)) -ge "$RESTART_AFTER" ]; then
-        server_started=$(date +%s)
-        start_server
-        open_editor_if_needed &
+  else
+    # Bluetooth carries no audio: never route or touch the speakers' volume here.
+    stop_loopback
+  fi
+
+  # server and editor
+  if [ -z "$mode" ] || [ -e "$PAUSE_FILE" ]; then
+    alive "$server_pid" && log "paused or no pedal: server stopped"
+    stop_server
+  elif ! alive "$server_pid"; then
+    server_pid=""
+    if [ $(($(date +%s) - server_started)) -ge "$RESTART_AFTER" ]; then
+      server_started=$(date +%s)
+      start_server "$mode"
+      open_editor_if_needed "$mode" &
+    fi
+  elif [ "$server_mode" = bluetooth ]; then
+    # the link has to come up (and stay up); the clock starts when it is missing, not when the
+    # server started, or a link that worked for minutes would be given up the second it drops
+    if linked || released; then
+      bt_lost_at=0
+bt_skip=""
+bt_skip_until=0
+    else
+      [ "$bt_lost_at" -eq 0 ] && bt_lost_at=$(date +%s)
+      if [ $(($(date +%s) - bt_lost_at)) -ge "$BT_CONNECT_TIMEOUT" ]; then
+        log "no Bluetooth link for ${BT_CONNECT_TIMEOUT}s on $bt_adapter: giving the pedal time and probing again"
+        bt_skip=$bt_adapter
+        bt_skip_until=$(($(date +%s) + BT_SKIP))
+        stop_server
+        bt_ready_at=$(($(date +%s) + BT_PROBE_EVERY))
+        last_probe=$(date +%s)
       fi
     fi
-  else
-    stop_loopback
-    stop_server
   fi
   sleep 2
 done
