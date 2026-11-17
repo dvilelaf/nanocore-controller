@@ -10,7 +10,7 @@ Base URL: `http://127.0.0.1:<port>`. The server binds to `127.0.0.1` unless `--h
 - **Origin check.** If an `Origin` header is present it must equal `http://<Host>`. A page on another site can therefore never write to the pedal.
 - **Token.** At start-up the server prints `http://127.0.0.1:<port>/#token=<random>` (a fresh 256-bit value per run). The page reads the token from the URL fragment, which never reaches server logs, keeps it in memory, removes it from the address bar and also keeps it in the tab's `sessionStorage` (so a reload does not drop the connection; it is private to that tab, gone when the tab closes and never put in `localStorage`), and sends it as the header `X-Nanocore-Token` on every `/api` request. The WebSocket authenticates with its first message (below). A missing or wrong token is `401 unauthorized`; comparison is constant-time.
 - **`--no-token`.** Turns the token check off for people who prefer a fixed address. Only allowed on the loopback address (the server refuses to start otherwise) and it prints a warning. `Host` and `Origin` are still checked, so web pages in the browser stay blocked; what is lost is protection against other programs or users on the same computer.
-- Static files and `GET /api/health` need no token and contain no state.
+- Static files and `GET /api/health` need no token and reveal no preset data; health only counts pages and reports whether the pedal link is up or released.
 - **Limits.** JSON bodies and WebSocket messages are at most 64 KiB; an edit request has at most 64 operations; each client may send at most 30 parameter edits per second (`429 rate_limited` beyond that).
 - **Read-only mode** (`--read-only`): every write endpoint answers `403 read_only`, and the autosave is switched off, so changes made on the pedal itself are never stored either.
 - **Limits on work.** At most 16 WebSocket connections (more get `503 busy`); at most 256 operations waiting for the pedal (`503 busy`); every operation costs at least one token of the rate limit, and a request bigger than the burst uses the whole budget instead of being refused for ever; a pedal that stops answering three times in a row is treated as a dropped link.
@@ -73,7 +73,7 @@ When an edit fails after some operations were sent, the error object also carrie
 
 | Method and path | Purpose |
 |---|---|
-| `GET /api/health` | `{"ok": true, "token_required": true, "clients": 0}`. No token. The page uses `token_required: false` to connect without one; `clients` is the number of pages connected and authenticated. |
+| `GET /api/health` | `{"ok": true, "token_required": true, "clients": 0, "connected": true, "released": false}`. No token. The page uses `token_required: false` to connect without one; `clients` is the number of pages connected and authenticated; `connected` and `released` describe the pedal link without reading it, for the launcher that opens the editor. |
 | `GET /api/state` | The state document above. |
 | `GET /api/presets` | `{"presets": [{"slot": 0, "display_number": 1, "name": "..."}]}`, read from the pedal's catalog. |
 | `GET /api/assets` | `{"amp": {"slot": 12, "name": "MesR2"}, "ir": {"slot": 2, "name": "Eng412A"}}`. Slow path, cached by the server. |

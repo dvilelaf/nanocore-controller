@@ -240,7 +240,20 @@ class ReadOnlyTest(ServerTestCase):
 
 class EndpointTest(ServerTestCase):
     async def test_health(self):
-        self.assertEqual(await (await self.client.get("/api/health")).json(), {"ok": True, "token_required": True, "clients": 0})
+        self.assertEqual(
+            await (await self.client.get("/api/health")).json(),
+            {"ok": True, "token_required": True, "clients": 0, "connected": True, "released": False},
+        )
+
+    async def test_health_reports_a_released_pedal(self):
+        self.assertEqual((await self.client.post("/api/release", headers=self.auth)).status, 200)
+        for _ in range(50):
+            if not (await (await self.client.get("/api/health")).json())["connected"]:
+                break
+            await asyncio.sleep(0.02)
+        body = await (await self.client.get("/api/health")).json()
+        self.assertFalse(body["connected"])
+        self.assertTrue(body["released"])
 
     async def test_health_counts_the_pages_connected(self):
         ws = await self.client.ws_connect("/ws")
@@ -950,13 +963,19 @@ class NoTokenServerTest(ServerTestCase):
 
     async def test_health_tells_the_page_that_no_token_is_needed(self):
         body = await (await self.client.get("/api/health")).json()
-        self.assertEqual(body, {"ok": True, "token_required": False, "clients": 0})
+        self.assertEqual(
+            body,
+            {"ok": True, "token_required": False, "clients": 0, "connected": True, "released": False},
+        )
 
 
 class TokenRequiredByDefaultTest(ServerTestCase):
     async def test_health_says_a_token_is_required(self):
         body = await (await self.client.get("/api/health")).json()
-        self.assertEqual(body, {"ok": True, "token_required": True, "clients": 0})
+        self.assertEqual(
+            body,
+            {"ok": True, "token_required": True, "clients": 0, "connected": True, "released": False},
+        )
 
 
 class NoTokenOptionTest(unittest.TestCase):

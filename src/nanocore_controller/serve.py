@@ -1495,8 +1495,17 @@ def _model_target(request: web.Request) -> tuple[str, int]:
 def build_routes(server: NanocoreServer) -> list[Any]:
     async def health(request: web.Request) -> web.Response:
         # "clients" is the number of pages connected and authenticated: the launcher that opens the
-        # editor when the pedal is plugged in uses it to avoid opening a second tab.
-        return _json({"ok": True, "token_required": server.options.require_token, "clients": server.client_count})
+        # editor when the pedal is plugged in uses it to avoid opening a second tab. "connected" and
+        # "released" let it wait for the link before opening one (over Bluetooth the server answers
+        # before the pedal does) and tell a released pedal from one that went away. Neither reads
+        # the pedal, so watching them costs nothing.
+        return _json({
+            "ok": True,
+            "token_required": server.options.require_token,
+            "clients": server.client_count,
+            "connected": server.connected,
+            "released": server.released,
+        })
 
     async def state(request: web.Request) -> web.Response:
         return _json(await server.state())
