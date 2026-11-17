@@ -37,7 +37,7 @@ The device names are matched by pattern (`alsa_input.*Nanocore.*analog-stereo` a
 
 ## The web editor starts with the pedal
 
-The same service also runs the editor's server while the Nanocore is plugged in over USB, and opens it in your browser (`xdg-open`) unless a page already has it open. Without the USB cable it does the same over Bluetooth (see below), minus the audio. It asks the server (`GET /api/health` reports `clients`, the pages connected) and gives an open page 8 seconds to reconnect after the server starts, so a tab you left open is reused. Tabs are never opened more often than every 30 seconds. Unplugging the pedal stops the server.
+The same service also runs the editor's server while the Nanocore is plugged in over USB, and opens it in your browser (`xdg-open`) unless a page already has it open. Without the USB cable it does the same over Bluetooth (see below), minus the audio. It asks the server (`GET /api/health` reports `clients`, the pages connected) and gives an open page 8 seconds to reconnect after the server starts, so a tab you left open is reused. If no page connects after it opens one, it tries twice more, 30 seconds apart: a browser that dies while starting would otherwise leave you with no editor until the next restart. Tabs are never opened more often than every 30 seconds. Unplugging the pedal stops the server.
 
 **Two switches in the editor.** The Connection menu of the web editor has a switch for each half:
 

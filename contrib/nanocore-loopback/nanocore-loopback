@@ -34,6 +34,8 @@ SERVE_ARGS=()                      # extra arguments for `nanocore serve`
 OPEN_BROWSER=yes
 CLIENT_WAIT=8                      # seconds a page has to connect before a new tab is opened
 MIN_OPEN_INTERVAL=30               # never open tabs more often than this (seconds)
+OPEN_ATTEMPTS=3                    # times the tab is opened while no page connects (a browser can exit at once)
+OPEN_CHECK_INTERVAL=$MIN_OPEN_INTERVAL   # seconds to wait for a page after each attempt
 RESTART_AFTER=10                   # wait this long after starting the server before starting it again
 BLUETOOTH=yes                      # fall back to Bluetooth control when there is no USB audio
 BT_ADDRESS=                        # empty: the pedal saved by `nanocore configure`
@@ -151,9 +153,24 @@ open_editor_if_needed() {
   local now last; now=$(date +%s)
   last=$(stat -c %Y "$OPENED_FILE" 2>/dev/null || echo 0)
   if [ $((now - last)) -lt "$MIN_OPEN_INTERVAL" ]; then return 0; fi
-  mkdir -p "$(dirname "$OPENED_FILE")" && touch "$OPENED_FILE"
-  log "opening the editor"
-  xdg-open "http://127.0.0.1:$SERVE_PORT/" >/dev/null 2>&1 &
+  # A browser can exit while it comes up (a flatpak that fails, a session still loading), and then
+  # nothing opens for as long as the server keeps running: try again while no page connects. The
+  # errors go to the journal, not /dev/null, so the next failure says why.
+  local attempt
+  for attempt in $(seq 1 "$OPEN_ATTEMPTS"); do
+    mkdir -p "$(dirname "$OPENED_FILE")" && touch "$OPENED_FILE"
+    log "opening the editor (attempt $attempt of $OPEN_ATTEMPTS)"
+    xdg-open "http://127.0.0.1:$SERVE_PORT/" >/dev/null &
+    waited=0
+    while [ "$waited" -lt "$OPEN_CHECK_INTERVAL" ]; do
+      sleep 1; waited=$((waited + 1))
+      [ -n "$(health)" ] || { log "the server went away; no tab opened"; return 0; }
+      n=$(clients)
+      if [ "${n:-0}" -gt 0 ]; then log "the editor is open"; return 0; fi
+    done
+    log "no page connected after ${OPEN_CHECK_INTERVAL}s"
+  done
+  log "no page connected after $OPEN_ATTEMPTS attempts; open http://127.0.0.1:$SERVE_PORT/ by hand"
 }
 
 while true; do
